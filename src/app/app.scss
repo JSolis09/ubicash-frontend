@@ -17,5 +17,8 @@
 @import '../theme/colors';
 
 .content-md, .content-ios {
-    background-color: $bg-app;
+    background-image: url('/assets/imgs/bg-app.png');
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size: 100%;
 }

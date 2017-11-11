@@ -6,18 +6,18 @@
         <ion-item class="login-item">
             <ion-label class="label-item" color="dark" fixed>Email</ion-label>
             <ion-label class="item-right">
-                <ion-icon ios="ios-mail-outline" md="md-mail"></ion-icon>
+                <ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
             </ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]='customer.email'></ion-input>
         </ion-item>
         <ion-item class="login-item">
             <ion-label class="label-item" color="dark" fixed>Contraseña</ion-label>
             <ion-label class="item-right">
-                <ion-icon class="icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+                <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
             </ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input type="password" [(ngModel)]='customer.password'></ion-input>
         </ion-item>
-        <button ion-button class="btn btn-login" full>Ingresar</button>
+        <button ion-button class="btn btn-login" [disabled]='!customer.email || !customer.password' full (click)='login()'>Ingresar</button>
         <p style="text-align: center;">ó</p>
         <button ion-button class="btn btn-fb" full>Inicia sesión con facebook</button>
     </ion-list>

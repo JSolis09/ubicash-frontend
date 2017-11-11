@@ -52,8 +52,11 @@ page-login {
                 max-width: 80px;
                 flex: 0 0 80px;
             }
-            .icon-lock {
-                font-size: 1.6rem;
+            .icon {
+                color: $dark;
+                &.icon-lock {
+                    font-size: 1.6rem;
+                }
             }
         }
         .btn {
