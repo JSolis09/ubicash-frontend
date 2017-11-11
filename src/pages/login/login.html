@@ -1,10 +1,22 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title class="title">{{ title }}</ion-title>
-    </ion-navbar>
-</ion-header>
 <ion-content padding>
     <div class="section-logo">
         <img class="logo" src="/assets/imgs/logo.svg" />
     </div>
+    <ion-list class="login-list">
+        <ion-item class="login-item">
+            <ion-label class="item-right">
+                <ion-icon ios="ios-mail-outline" md="md-mail"></ion-icon>
+            </ion-label>
+            <ion-input type="text" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item class="login-item">
+            <ion-label class="item-right">
+                <ion-icon ios="ios-lock-outline" md="ios-lock"></ion-icon>
+            </ion-label>
+            <ion-input type="text" placeholder="Contraseña"></ion-input>
+        </ion-item>
+        <button ion-button class="btn btn-login" full>Ingresar</button>
+        <p style="text-align: center;">ó</p>
+        <button ion-button class="btn" full>Inicia sesión con facebook</button>
+    </ion-list>
 </ion-content>

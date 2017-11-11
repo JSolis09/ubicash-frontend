@@ -1,13 +1,50 @@
+@import '../../theme/colors';
+
 page-login {
     .title {
         text-align: center;
     }
     .section-logo {
-        margin-top: 1.5em;
+        margin-top: 4.57em;
         .logo {
             display: block;
             margin: auto;
             height: 8em;
+        }
+    }
+    .login-list {
+        margin-top: 2em;
+        ion-item.login-item {
+            border: 1px solid #dedede;
+            position: relative;
+            padding-left: 0;
+            margin-bottom: 16px;
+            &.input-has-focus {
+                &:last-child {
+                    box-shadow: none;
+                    border-bottom-color: #dedede;
+                }
+                .item-inner {
+                    box-shadow: none;
+                    border-bottom-color: #dedede;
+                }
+            }
+            .item-inner {
+                border: none;
+                padding-right: 0;
+            }
+            .item-right {
+                display: block;
+                position: absolute;
+                right: 0;
+                margin: auto .5em;
+            }
+        }
+        .btn {
+            height: 40px;
+            &.btn-login {
+                background-color: $green-light-two;
+            }
         }
     }
 }
