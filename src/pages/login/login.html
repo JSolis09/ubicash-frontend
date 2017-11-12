@@ -20,5 +20,9 @@
         <button ion-button class="btn btn-login" [disabled]='!customer.email || !customer.password' full (click)='login()'>Ingresar</button>
         <p style="text-align: center;">ó</p>
         <button ion-button class="btn btn-fb" full>Inicia sesión con facebook</button>
+        <div class="register-link">
+            <span>¿No tienes una cuenta?</span>
+            <button ion-button clear color="primary" >Regístrate</button>
+        </div>
     </ion-list>
 </ion-content>

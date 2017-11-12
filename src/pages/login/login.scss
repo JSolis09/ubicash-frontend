@@ -80,5 +80,10 @@ page-login {
                 background-color: $blue-fb;
             }
         }
+        .register-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
