@@ -1,0 +1,89 @@
+@import '../../theme/colors';
+
+page-login {
+    .title {
+        text-align: center;
+    }
+    .section-logo {
+        margin-top: 4.57em;
+        .logo {
+            display: block;
+            margin: auto;
+            height: 8em;
+        }
+    }
+    .login-list {
+        margin-top: 2em;
+        ion-item.login-item {
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            border: 1px solid #dedede;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            padding-left: 4px;
+            position: relative;
+            &.input-has-focus {
+                &:last-child {
+                    box-shadow: none;
+                    border-bottom-color: #dedede;
+                }
+                .item-inner {
+                    box-shadow: none;
+                    border-bottom-color: #dedede;
+                }
+            }
+            .item-inner {
+                border: none;
+                padding-right: 0;
+                .input {
+                    padding-right: 16px;
+                }
+            }
+            .item-right {
+                display: block;
+                position: absolute;
+                right: 0;
+                margin: auto .5em;
+            }
+            .label-item {
+                padding-left: 4px;
+                width: 80px;
+                min-width: 80px;
+                max-width: 80px;
+                flex: 0 0 80px;
+            }
+            .icon {
+                color: $dark;
+                &.icon-lock {
+                    font-size: 1.6rem;
+                }
+            }
+        }
+        .btn {
+            height: 40px;
+            border-radius: 8px;
+            &.btn-login {
+                background-color: $green-light-two;
+                border:0px solid $green-light-three;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                border-radius: 6px;
+                font-size:12px;
+                padding: 10px 10px 10px 10px;
+                text-decoration:none;
+                font-weight:bold;
+                color: $white;
+                background-color: $green-light-one;
+                background-image: linear-gradient(to bottom, $green-light-one, $green-light-two);
+            }
+            &.btn-fb {
+                background-color: $blue-fb;
+            }
+        }
+        .register-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

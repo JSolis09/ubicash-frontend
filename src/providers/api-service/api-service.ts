@@ -32,4 +32,9 @@ export class ApiServiceProvider {
         const host: string = `${this.host}${api}`;
         return this.http.get(host);
     }
+
+    public post(api: string, data: any): Observable<any> {
+        const host: string = `${this.host}/api/${api}`;
+        return this.http.post(host, data);
+    }
 }
