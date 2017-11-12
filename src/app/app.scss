@@ -25,3 +25,31 @@
     background-size: 100%;
 }
 
+.logo-app {
+    display: block;
+    margin: auto;
+    height: 8em;
+}
+
+page-register-user {
+    ion-header.header {
+        .toolbar {
+            .toolbar-background-md, .toolbar-background-ios {
+                background: none;
+                border:none;
+                box-shadow: none;
+            }
+        }
+        &::after {
+            display: none;
+        }
+    }
+    ion-content {
+        .fixed-content {
+            margin-top: 0 !important;
+        }
+        .scroll-content {
+            margin-top: 16px !important;
+        }
+    }
+}

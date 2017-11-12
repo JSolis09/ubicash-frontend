@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { Customer } from '../../providers/customer/customer';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
+import { RegisterUserPage } from '../register-user/register-user';
 
 /**
 * Generated class for the LoginPage page.
@@ -35,31 +36,40 @@ export class LoginPage {
         const loading = this.loadingCtrl.create({
             content: 'iniciando sesión...'
         });
+        loading.present();
         this.apiService
             .post('Users/login', {
                 email: this.customer.email,
                 password: this.customer.password
             })
-            .subscribe(() => {
+            .subscribe((response) => {
+                loading.dismiss();
                 const alert = this.alertCtrl.create({
                     title: 'Inició sesión correctamente',
                     buttons: ['Cerrar']
                 });
                 alert.present();
-            }, (error) => {
+            }, (response) => {
+                console.log(response);
+                loading.dismiss();
+                const error = response.error;
+                let message: string;
+                if (error && error.code === 'LOGIN_FAILED'){
+                    message = 'Usuario o contraseña incorrectos';
+                } else {
+                    message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
+                }
                 const alert = this.alertCtrl.create({
                     title: 'Error',
-                    subTitle: `${JSON.stringify(error)}`,
+                    subTitle: message,
                     buttons: ['Cerrar']
                 });
                 alert.present();
-            }, () => {
-                loading.dismiss();
             });
     }
 
     goRegister(): void {
-
+        this.navCtrl.push(RegisterUserPage);
     }
 
 }

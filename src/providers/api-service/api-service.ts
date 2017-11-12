@@ -35,6 +35,10 @@ export class ApiServiceProvider {
 
     public post(api: string, data: any): Observable<any> {
         const host: string = `${this.host}/api/${api}`;
-        return this.http.post(host, data);
+        return this.http
+            .post(host, data)
+            .map((response) => {
+                console.log(response);
+            });
     }
 }

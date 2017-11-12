@@ -1,4 +1,21 @@
 .input-fields {
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:    $dark;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:    $dark;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:    $dark;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:    $dark;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color:    $dark;
+    }
     margin-top: 2em;
     ion-item.input-field {
         background: rgba(255,255,255,0.2);
@@ -37,6 +54,12 @@
             min-width: 80px;
             max-width: 80px;
             flex: 0 0 80px;
+            &.medium {
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
+                flex: 0 0 150px;
+            }
         }
         .icon {
             color: $dark;
