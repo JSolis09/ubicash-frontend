@@ -48,7 +48,7 @@ export class LoginPage {
                 alert.present();
             }, (error) => {
                 const alert = this.alertCtrl.create({
-                    title: 'Error inicio de sesión',
+                    title: 'Error',
                     subTitle: `${JSON.stringify(error)}`,
                     buttons: ['Cerrar']
                 });
@@ -59,7 +59,7 @@ export class LoginPage {
     }
 
     goRegister(): void {
-        
+
     }
 
 }

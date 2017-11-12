@@ -2,22 +2,22 @@
     <div class="section-logo">
         <img class="logo" src="/assets/imgs/logo.svg" />
     </div>
-    <ion-list class="login-list">
-        <ion-item class="login-item">
+    <ion-list class="input-fields">
+        <ion-item class="input-field">
             <ion-label class="label-item" color="dark" fixed>Email</ion-label>
-            <ion-label class="item-right">
+            <ion-label class="icon-right">
                 <ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
             </ion-label>
             <ion-input type="text" [(ngModel)]='customer.email'></ion-input>
         </ion-item>
-        <ion-item class="login-item">
+        <ion-item class="input-field">
             <ion-label class="label-item" color="dark" fixed>Contraseña</ion-label>
-            <ion-label class="item-right">
+            <ion-label class="icon-right">
                 <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
             </ion-label>
             <ion-input type="password" [(ngModel)]='customer.password'></ion-input>
         </ion-item>
-        <button ion-button class="btn btn-login" [disabled]='!customer.email || !customer.password' full (click)='login()'>Ingresar</button>
+        <button ion-button class="btn btn-primary" [disabled]='!customer.email || !customer.password' full (click)='login()'>Ingresar</button>
         <p style="text-align: center;">ó</p>
         <button ion-button class="btn btn-fb" full>Inicia sesión con facebook</button>
         <div class="register-link">
