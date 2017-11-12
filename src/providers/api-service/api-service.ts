@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 import { settings } from '../../environments/environment';
 
@@ -28,6 +31,16 @@ export class ApiServiceProvider {
             });
     }
 
+    private errorHandler(error: any): Observable<any> {
+        let errorResponse;
+        if (error && error.json) {
+            errorResponse = error.json();
+        } else {
+            errorResponse = error;
+        }
+        return Observable.throw(errorResponse || { });
+    }
+
     public get(api: string): Observable<any> {
         const host: string = `${this.host}${api}`;
         return this.http.get(host);
@@ -37,8 +50,7 @@ export class ApiServiceProvider {
         const host: string = `${this.host}/api/${api}`;
         return this.http
             .post(host, data)
-            .map((response) => {
-                console.log(response);
-            });
+            .map((response) => response.json())
+            .catch((error: Error) => this.errorHandler(error));
     }
 }

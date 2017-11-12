@@ -7,37 +7,38 @@
 		<img class="logo-app" src="/assets/imgs/logo.svg" />
 		<header>CREAR UNA NUEVA CUENTA</header>
 	</div>
-	<ion-list class="input-fields">
-		<ion-item class="input-field">
-			<ion-label class="label-item" color="dark" fixed>Usuario</ion-label>
-			<ion-label class="icon-right">
-				<ion-icon class="icon" ios="ios-person-outline" md="ios-person"></ion-icon>
-			</ion-label>
-			<ion-input type="text" [(ngModel)]='customer.username'></ion-input>
-		</ion-item>
-		<ion-item class="input-field">
-			<ion-label class="label-item" color="dark" fixed>Contraseña</ion-label>
-			<ion-label class="icon-right">
-				<ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
-			</ion-label>
-			<ion-input type="password" [(ngModel)]='customer.password'></ion-input>
-		</ion-item>
-		<ion-item class="input-field">
-			<ion-label class="label-item" color="dark" fixed>Repetir contraseña</ion-label>
-			<ion-label class="icon-right">
-				<ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
-			</ion-label>
-			<ion-input type="password" [(ngModel)]='customer.repeatPassword'></ion-input>
-		</ion-item>
-        <ion-item class="input-field">
-			<ion-label class="label-item" color="dark" fixed>Email</ion-label>
-			<ion-label class="icon-right">
-				<ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
-			</ion-label>
-			<ion-input type="text" [(ngModel)]='customer.email'></ion-input>
-		</ion-item>
-		<button ion-button class="btn btn-primary" [disabled]='!customer.email || !customer.password' full (click)='login()'>Registrar</button>
-		<p style="text-align: center;">ó</p>
-		<button ion-button class="btn btn-fb" full>Inicia sesión con facebook</button>
-	</ion-list>
+    <form novalidate [formGroup]="user">
+        <ion-list class="input-fields">
+            <ion-item class="input-field">
+                <ion-label class="icon-right">
+                    <ion-icon class="icon" ios="ios-person-outline" md="ios-person"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="username" placeholder="Usuario"></ion-input>
+            </ion-item>
+            <ion-item class="input-field">
+                <ion-label class="icon-right">
+                    <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+                </ion-label>
+                <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
+            </ion-item>
+            <ion-item class="input-field">
+                <ion-label class="icon-right">
+                    <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+                </ion-label>
+                <ion-input type="password" formControlName="repeatPassword" placeholder="Repetir contraseña"></ion-input>
+            </ion-item>
+            <div class="error" *ngIf="unmatchPassword(user) && user.get('repeatPassword').touched">
+                Las contraseñas no coinciden.
+            </div>
+            <ion-item class="input-field">
+                <ion-label class="icon-right">
+                    <ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
+                </ion-label>
+                <ion-input type="text"formControlName="email" placeholder="Email"></ion-input>
+            </ion-item>
+            <button ion-button class="btn btn-primary" full [disabled]="user.invalid || unmatchPassword(user)" (click)="register(user)">Registrar</button>
+            <p style="text-align: center;">ó</p>
+            <button ion-button class="btn btn-fb" full>Inicia sesión con facebook</button>
+        </ion-list>
+    </form>
 </ion-content>
