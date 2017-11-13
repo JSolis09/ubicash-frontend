@@ -5,12 +5,7 @@ import { Customer } from '../../providers/customer/customer';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { RegisterUserPage } from '../register-user/register-user';
 
-/**
-* Generated class for the LoginPage page.
-*
-* See https://ionicframework.com/docs/components/#navigation for more info on
-* Ionic pages and navigation.
-*/
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -23,6 +18,7 @@ export class LoginPage {
 
     constructor(private alertCtrl: AlertController,
                 private apiService: ApiServiceProvider,
+                private fb: Facebook,
                 private loadingCtrl: LoadingController,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
@@ -70,6 +66,30 @@ export class LoginPage {
 
     goRegister(): void {
         this.navCtrl.push(RegisterUserPage);
+    }
+
+    fbLogin(): void {
+        this.fb.login(['public_profile', 'user_friends', 'email'])
+        .then((res: FacebookLoginResponse) => {
+            this.fb.api('me?fields=id,email,name', [])
+                .then((profile) => {
+                    const userData = {
+                        email: profile['email'],
+                        first_name: profile['first_name'],
+                        username: profile['name']
+                    };
+                    const alert = this.alertCtrl.create({
+                        title: 'Inició sesión correctamente',
+                        subTitle: `${JSON.stringify({
+                            fbResponse: res.authResponse,
+                            userData: userData
+                        })}`,
+                        buttons: ['Cerrar']
+                    });
+                    alert.present();
+                });
+        })
+        .catch(e => console.log('Error logging into Facebook', e));
     }
 
 }
