@@ -1,0 +1,76 @@
+.input-fields {
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:    $dark;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:    $dark;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:    $dark;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:    $dark;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color:    $dark;
+    }
+    margin-top: 2em;
+    ion-item.input-field {
+        background: rgba(255,255,255,0.2);
+        border-radius: 6px;
+        border: 1px solid #dedede;
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+        padding-left: 4px;
+        position: relative;
+        &.input-has-focus {
+            &:last-child {
+                box-shadow: none;
+                border-bottom-color: #dedede;
+            }
+            .item-inner {
+                box-shadow: none;
+                border-bottom-color: #dedede;
+            }
+        }
+        .item-inner {
+            border: none;
+            padding-right: 0;
+            .input {
+                padding-right: 16px;
+            }
+        }
+        .icon-right {
+            display: block;
+            position: absolute;
+            right: 0;
+            margin: auto .5em;
+        }
+        .label-item {
+            padding-left: 4px;
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            flex: 0 0 80px;
+            &.medium {
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
+                flex: 0 0 150px;
+            }
+        }
+        .icon {
+            color: $dark;
+            &.icon-lock {
+                font-size: 1.6rem;
+            }
+        }
+    }
+    .register-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

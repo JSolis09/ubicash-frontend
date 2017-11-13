@@ -15,10 +15,41 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 @import '../theme/colors';
+@import '../theme/buttons';
+@import '../theme/forms';
 
 .content-md, .content-ios {
-    background-image: url('/assets/imgs/bg-app.png');
+    background-image: url('../assets/imgs/bg-app.png');
     background-repeat:no-repeat;
     background-position:center;
     background-size: 100%;
+}
+
+.logo-app {
+    display: block;
+    margin: auto;
+    height: 8em;
+}
+
+page-register-user {
+    ion-header.header {
+        .toolbar {
+            .toolbar-background-md, .toolbar-background-ios {
+                background: none;
+                border:none;
+                box-shadow: none;
+            }
+        }
+        &::after {
+            display: none;
+        }
+    }
+    ion-content {
+        .fixed-content {
+            margin-top: 0 !important;
+        }
+        .scroll-content {
+            margin-top: 16px !important;
+        }
+    }
 }
