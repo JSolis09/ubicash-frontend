@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
-import { Customer } from '../../providers/customer/customer';
+import { Customer, FacebookCustomer } from '../../providers/customer/customer';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { RegisterUserPage } from '../register-user/register-user';
 
@@ -46,7 +46,6 @@ export class LoginPage {
                 });
                 alert.present();
             }, (response) => {
-                console.log(response);
                 loading.dismiss();
                 const error = response.error;
                 let message: string;
@@ -69,27 +68,64 @@ export class LoginPage {
     }
 
     fbLogin(): void {
-        this.fb.login(['public_profile', 'user_friends', 'email'])
-        .then((res: FacebookLoginResponse) => {
-            this.fb.api('me?fields=id,email,name', [])
-                .then((profile) => {
-                    const userData = {
-                        email: profile['email'],
-                        first_name: profile['first_name'],
-                        username: profile['name']
-                    };
-                    const alert = this.alertCtrl.create({
-                        title: 'Inició sesión correctamente',
-                        subTitle: `${JSON.stringify({
-                            fbResponse: res.authResponse,
-                            userData: userData
-                        })}`,
-                        buttons: ['Cerrar']
+        const loading = this.loadingCtrl.create({
+            content: 'iniciando sesión...'
+        });
+        loading.present();
+        const alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Ocurrió un error al conectarse con Facebook',
+            buttons: ['Cerrar']
+        });
+        this.fb
+            .login(['public_profile', 'user_friends', 'email'])
+            .then((res: FacebookLoginResponse) => {
+                this.fb
+                    .api('me?fields=id,email,name', [])
+                    .then((profile) => {
+                        const data: FacebookCustomer = {
+                            email: profile['email'],
+                            expires: res.authResponse.expiresIn,
+                            fbUserId: res.authResponse.userID,
+                            token: res.authResponse.accessToken
+                        };
+                        this.apiService
+                            .post('FacebookAccessTokens/login', data)
+                            .subscribe((response) => {
+                                loading.dismiss();
+                                const alert = this.alertCtrl.create({
+                                    title: 'Inició sesión correctamente',
+                                    subTitle: `Bienvenido, ${ profile['name'] }`,
+                                    buttons: ['Cerrar']
+                                });
+                                alert.present();
+                            }, (errorResponse) => {
+                                loading.dismiss();
+                                const error = errorResponse.error;
+                                let message;
+                                if (error && error.code === 'EMAIL_EXISTS'){
+                                    message = 'El email ya se encuentra registrado';
+                                } else {
+                                    message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
+                                }
+                                const alert = this.alertCtrl.create({
+                                    title: 'Error',
+                                    subTitle: message,
+                                    buttons: ['Cerrar']
+                                });
+                                alert.present();
+                            });
+                    })
+                    .catch((error) => {
+                        alert.present();
+                        loading.dismiss();
                     });
-                    alert.present();
-                });
-        })
-        .catch(e => console.log('Error logging into Facebook', e));
+            })
+            .catch(e => {
+                alert.present();
+                loading.dismiss();
+            });
     }
+
 
 }
