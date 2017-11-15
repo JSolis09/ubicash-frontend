@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
-import { Customer } from '../../providers/customer/customer';
+import { Customer, FacebookCustomer } from '../../providers/customer/customer';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { RegisterUserPage } from '../register-user/register-user';
 
-/**
-* Generated class for the LoginPage page.
-*
-* See https://ionicframework.com/docs/components/#navigation for more info on
-* Ionic pages and navigation.
-*/
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -23,6 +18,7 @@ export class LoginPage {
 
     constructor(private alertCtrl: AlertController,
                 private apiService: ApiServiceProvider,
+                private fb: Facebook,
                 private loadingCtrl: LoadingController,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
@@ -50,7 +46,6 @@ export class LoginPage {
                 });
                 alert.present();
             }, (response) => {
-                console.log(response);
                 loading.dismiss();
                 const error = response.error;
                 let message: string;
@@ -71,5 +66,66 @@ export class LoginPage {
     goRegister(): void {
         this.navCtrl.push(RegisterUserPage);
     }
+
+    fbLogin(): void {
+        const loading = this.loadingCtrl.create({
+            content: 'iniciando sesión...'
+        });
+        loading.present();
+        const alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Ocurrió un error al conectarse con Facebook',
+            buttons: ['Cerrar']
+        });
+        this.fb
+            .login(['public_profile', 'user_friends', 'email'])
+            .then((res: FacebookLoginResponse) => {
+                this.fb
+                    .api('me?fields=id,email,name', [])
+                    .then((profile) => {
+                        const data: FacebookCustomer = {
+                            email: profile['email'],
+                            expires: res.authResponse.expiresIn,
+                            fbUserId: res.authResponse.userID,
+                            token: res.authResponse.accessToken
+                        };
+                        this.apiService
+                            .post('FacebookAccessTokens/login', data)
+                            .subscribe((response) => {
+                                loading.dismiss();
+                                const alert = this.alertCtrl.create({
+                                    title: 'Inició sesión correctamente',
+                                    subTitle: `Bienvenido, ${ profile['name'] }`,
+                                    buttons: ['Cerrar']
+                                });
+                                alert.present();
+                            }, (errorResponse) => {
+                                loading.dismiss();
+                                const error = errorResponse.error;
+                                let message;
+                                if (error && error.code === 'EMAIL_EXISTS'){
+                                    message = 'El email ya se encuentra registrado';
+                                } else {
+                                    message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
+                                }
+                                const alert = this.alertCtrl.create({
+                                    title: 'Error',
+                                    subTitle: message,
+                                    buttons: ['Cerrar']
+                                });
+                                alert.present();
+                            });
+                    })
+                    .catch((error) => {
+                        alert.present();
+                        loading.dismiss();
+                    });
+            })
+            .catch(e => {
+                alert.present();
+                loading.dismiss();
+            });
+    }
+
 
 }
