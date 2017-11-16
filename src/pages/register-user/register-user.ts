@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ApiServiceProvider } from '../../providers/api-service/api-service';
+import { CustomerServiceProvider } from '../../providers/customer/customer-service';
 import { Customer } from '../../providers/customer/customer';
 
 import { LoginPage } from '../login/login';
@@ -16,7 +16,7 @@ export class RegisterUserPage implements OnInit {
     public user: FormGroup;
 
     constructor(private alertCtrl: AlertController,
-                private apiService: ApiServiceProvider,
+                private customerService: CustomerServiceProvider,
                 private loadingCtrl: LoadingController,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
@@ -57,8 +57,8 @@ export class RegisterUserPage implements OnInit {
                     content: 'Registrando...'
                 });
                 loading.present();
-                this.apiService
-                    .post('Users', customer)
+                this.customerService
+                    .create(customer)
                     .subscribe((response) => {
                         loading.dismiss();
                         const alert = this.alertCtrl.create({

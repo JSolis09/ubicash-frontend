@@ -1,3 +1,3 @@
 export const settings = {
-    host: 'https://ubicash-development.mybluemix.net',
+    host: 'http://localhost:8080',
 };
