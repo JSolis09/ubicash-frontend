@@ -1,14 +1,20 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Home
+            Búsqueda
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    Bienvenido
-    <p>
-        {{ customer | json }}
-    </p>
+    <ion-list>
+        <ion-item>
+            <ion-label>Banco</ion-label>
+            <ion-select [(ngModel)]="bank" placeholder=Seleccione >
+                <ion-option value="BCP">BCP</ion-option>
+                <ion-option value="IBK">Interbank</ion-option>
+                <ion-option value="BBVA">BBVA</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
 </ion-content>
