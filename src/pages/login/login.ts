@@ -78,7 +78,7 @@ export class LoginPage {
                                         let message;
                                         if (error && error.code === 'EMAIL_EXISTS'){
                                             message = 'El email ya se encuentra registrado';
-                                        } else {
+                                        }else {
                                             message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
                                         }
                                         const alert = this.alertCtrl.create({
@@ -117,6 +117,8 @@ export class LoginPage {
                 let message: string;
                 if (error && error.code === 'LOGIN_FAILED'){
                     message = 'Usuario o contraseña incorrectos';
+                } else if(error && error.code === 'LOGIN_FAILED_EMAIL_NOT_VERIFIED') {
+                    message = 'El email no ha sido verificado';
                 } else {
                     message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
                 }

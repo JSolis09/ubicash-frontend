@@ -13,7 +13,6 @@ import { Geolocation, Coordinates } from '@ionic-native/geolocation';
 })
 export class MapComponent implements OnInit {
     private map: GoogleMap;
-    private myLocation: Coordinates;
 
     @ViewChild('map') mapElement: ElementRef;
 
