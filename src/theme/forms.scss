@@ -1,30 +1,34 @@
+$bg-input: $green-dark;
+$color-input: $white;
+
 .input-fields {
     ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color:    $dark;
+        color:    $color-input;
     }
     :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-       color:    $dark;
+       color:    $color-input;
        opacity:  1;
     }
     ::-moz-placeholder { /* Mozilla Firefox 19+ */
-       color:    $dark;
+       color:    $color-input;
        opacity:  1;
     }
     :-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color:    $dark;
+       color:    $color-input;
     }
     ::-ms-input-placeholder { /* Microsoft Edge */
-       color:    $dark;
+       color:    $color-input;
     }
     margin-top: 2em;
     ion-item.input-field {
-        background: rgba(255,255,255,0.2);
+        background-color: rgba(100, 139, 0, 0.9);
         border-radius: 6px;
         border: 1px solid #dedede;
         font-size: 1.4rem;
         margin-bottom: 16px;
         padding-left: 4px;
         position: relative;
+        color: $color-input;
         &.input-has-focus {
             &:last-child {
                 box-shadow: none;
@@ -62,7 +66,7 @@
             }
         }
         .icon {
-            color: $dark;
+            color: $white;
             &.icon-lock {
                 font-size: 1.6rem;
             }

@@ -31,12 +31,12 @@ export class CustomerServiceProvider {
 
     public create(customer: Customer): Observable<any> {
         return this.apiService
-            .post('Users', customer);
+            .post('Customers', customer);
     }
 
     public login(customer: Customer): Observable<CustomerToken> {
         return this.apiService
-            .post('Users/login', customer)
+            .post('Customers/login', customer)
     }
 
     public loginWithFbAccessToken(data: FacebookCustomer): Observable<CustomerToken> {

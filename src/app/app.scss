@@ -17,13 +17,14 @@
 @import '../theme/colors';
 @import '../theme/buttons';
 @import '../theme/forms';
+@import '../theme/modal';
 
 .content-md, .content-ios {
-    background-image: url('../assets/imgs/bg-app.png');
-    background-repeat:no-repeat;
-    background-position:center;
-    background-size: 100%;
-    // background-color: $bg-app;
+    // background-image: url('../assets/imgs/bg-app.png');
+    // background-repeat:no-repeat;
+    // background-position:center;
+    // background-size: 100%;
+    background-color: $bg-app;
 }
 
 .logo-app {

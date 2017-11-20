@@ -41,8 +41,14 @@ export class LoginPage {
     fbLogin(): void {
         const alert = this.alertCtrl.create({
             title: 'Error',
-            subTitle: 'Ocurrió un error al conectarse con Facebook',
-            buttons: ['Cerrar']
+            message: 'Ocurrió un error al conectarse con Facebook',
+            buttons: [
+                {
+                    text: 'cerrar',
+                    role: 'cancel',
+                    cssClass: 'one-button'
+                }
+            ]
         });
         this.fb
             .login(['public_profile', 'user_friends', 'email'])
@@ -78,13 +84,19 @@ export class LoginPage {
                                         let message;
                                         if (error && error.code === 'EMAIL_EXISTS'){
                                             message = 'El email ya se encuentra registrado';
-                                        } else {
+                                        }else {
                                             message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
                                         }
                                         const alert = this.alertCtrl.create({
                                             title: 'Error',
-                                            subTitle: message,
-                                            buttons: ['Cerrar']
+                                            message: message,
+                                            buttons: [
+                                                {
+                                                    text: 'cerrar',
+                                                    role: 'cancel',
+                                                    cssClass: 'one-button'
+                                                }
+                                            ]
                                         });
                                         alert.present();
                                     });
@@ -94,6 +106,9 @@ export class LoginPage {
                         alert.present();
                         loading.dismiss();
                     });
+            })
+            .catch(() => {
+
             });
     }
 
@@ -117,13 +132,21 @@ export class LoginPage {
                 let message: string;
                 if (error && error.code === 'LOGIN_FAILED'){
                     message = 'Usuario o contraseña incorrectos';
+                } else if(error && error.code === 'LOGIN_FAILED_EMAIL_NOT_VERIFIED') {
+                    message = 'El email no ha sido verificado';
                 } else {
                     message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
                 }
                 const alert = this.alertCtrl.create({
                     title: 'Error',
-                    subTitle: message,
-                    buttons: ['Cerrar']
+                    message: message,
+                    buttons: [
+                        {
+                            text: 'cerrar',
+                            role: 'cancel',
+                            cssClass: 'one-button'
+                        }
+                    ]
                 });
                 alert.present();
             });
