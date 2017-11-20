@@ -1,0 +1,32 @@
+ion-alert {
+    &.alert-ios, &.alert-md {
+        .alert-wrapper {
+            border-radius: 8px;
+            .alert-head {
+                border-bottom: 1px solid $dark;
+                padding: 5px 10px;
+                text-align: center;
+                text-transform: uppercase;
+                min-height: 35px;
+            }
+            .alert-message {
+                text-align: center;
+                padding: 10px 24px;
+            }
+            .alert-button-group {
+                padding: 5px;
+                .alert-button {
+                    &.one-button {
+                        border-radius: 8px;
+                        width: 100%;
+                        color: $white;
+                        background-color: $green-light-three;
+                        .button-inner {
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

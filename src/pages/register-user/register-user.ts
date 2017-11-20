@@ -62,9 +62,11 @@ export class RegisterUserPage implements OnInit {
                     .subscribe((response) => {
                         loading.dismiss();
                         const alert = this.alertCtrl.create({
-                            title: 'Se registró correctamente',
+                            title: '',
+                            message: 'Se registró correctamente',
                             buttons: [{
                                 text: 'Aceptar',
+                                cssClass: 'one-button',
                                 handler: () => {
                                     this.navCtrl.setRoot(LoginPage);
                                 }
@@ -76,8 +78,14 @@ export class RegisterUserPage implements OnInit {
                         const error = responseError.error || {};
                         const alert = this.alertCtrl.create({
                             title: 'Error',
-                            subTitle: error.message || 'Ocurrió un error al iniciar sesión, Intentelo más tarde',
-                            buttons: ['Cerrar']
+                            message: error.message || 'Ocurrió un error a la hora de registrar',
+                            buttons: [
+                                {
+                                    text: 'cerrar',
+                                    role: 'cancel',
+                                    cssClass: 'one-button'
+                                }
+                            ]
                         });
                         alert.present();
                     });

@@ -41,8 +41,14 @@ export class LoginPage {
     fbLogin(): void {
         const alert = this.alertCtrl.create({
             title: 'Error',
-            subTitle: 'Ocurrió un error al conectarse con Facebook',
-            buttons: ['Cerrar']
+            message: 'Ocurrió un error al conectarse con Facebook',
+            buttons: [
+                {
+                    text: 'cerrar',
+                    role: 'cancel',
+                    cssClass: 'one-button'
+                }
+            ]
         });
         this.fb
             .login(['public_profile', 'user_friends', 'email'])
@@ -83,8 +89,14 @@ export class LoginPage {
                                         }
                                         const alert = this.alertCtrl.create({
                                             title: 'Error',
-                                            subTitle: message,
-                                            buttons: ['Cerrar']
+                                            message: message,
+                                            buttons: [
+                                                {
+                                                    text: 'cerrar',
+                                                    role: 'cancel',
+                                                    cssClass: 'one-button'
+                                                }
+                                            ]
                                         });
                                         alert.present();
                                     });
@@ -94,6 +106,9 @@ export class LoginPage {
                         alert.present();
                         loading.dismiss();
                     });
+            })
+            .catch(() => {
+
             });
     }
 
@@ -124,8 +139,14 @@ export class LoginPage {
                 }
                 const alert = this.alertCtrl.create({
                     title: 'Error',
-                    subTitle: message,
-                    buttons: ['Cerrar']
+                    message: message,
+                    buttons: [
+                        {
+                            text: 'cerrar',
+                            role: 'cancel',
+                            cssClass: 'one-button'
+                        }
+                    ]
                 });
                 alert.present();
             });
