@@ -11,9 +11,7 @@
         <ion-item>
             <ion-label>Banco</ion-label>
             <ion-select [(ngModel)]="bank" placeholder=Seleccione >
-                <ion-option value="BCP">BCP</ion-option>
-                <ion-option value="IBK">Interbank</ion-option>
-                <ion-option value="BBVA">BBVA</ion-option>
+                <ion-option *ngFor="let bank of banks | async" [value]="bank.code">{{bank.short_name}}</ion-option>
             </ion-select>
         </ion-item>
     </ion-list>

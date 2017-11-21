@@ -12,6 +12,7 @@ import { RegisterUserPageModule } from '../pages/register-user/register-user.mod
 import { AppiServiceModule } from '../providers/api-service/api-service.module';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
 import { IonicStorageModule } from '@ionic/storage';
+import { BankServiceProvider } from '../providers/bank/bank-service';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { IonicStorageModule } from '@ionic/storage';
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CustomerServiceProvider
+        CustomerServiceProvider,
+        BankServiceProvider
     ]
 })
 export class AppModule {}
