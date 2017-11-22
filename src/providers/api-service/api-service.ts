@@ -41,7 +41,7 @@ export class ApiServiceProvider {
         return this.http
             .get(host, options)
             .map((response) => response.json())
-            .catch((error: Error) => this.errorHandler(error));;
+            .catch((error: Error) => this.errorHandler(error));
     }
 
     public post(api: string, data: any): Observable<any> {

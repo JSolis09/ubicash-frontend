@@ -1,16 +1,19 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Búsqueda
+            <button ion-button menuToggle>
+                    <ion-icon class="icon" ios="ios-menu" md="md-menu"></ion-icon>
+            </button> Búsqueda
         </ion-title>
     </ion-navbar>
 </ion-header>
-
 <ion-content padding>
     <ion-list>
-        <ion-item>
-            <ion-label>Banco</ion-label>
-            <ion-select [(ngModel)]="bank" placeholder=Seleccione >
+        <ion-item class="input-search">
+            <ion-label class="label-search">
+                <ion-icon class="icon" ios="ios-search" md="md-search"></ion-icon>
+            </ion-label>
+            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Buscar bancos" >
                 <ion-option *ngFor="let bank of banks | async" [value]="bank.code">{{bank.short_name}}</ion-option>
             </ion-select>
         </ion-item>

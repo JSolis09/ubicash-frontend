@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -16,7 +16,8 @@ export class HomePage {
     public customer: Customer;
     public banks: Observable<Bank[]>;
 
-    constructor(public navCtrl: NavController,
+    constructor(private navCtrl: NavController,
+                private menuCtrl: MenuController,
                 private customerService: CustomerServiceProvider,
                 private bankService: BankServiceProvider
     ) {
