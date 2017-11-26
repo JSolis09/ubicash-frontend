@@ -4,7 +4,6 @@ import { Customer, FacebookCustomer } from './customer';
 import { CustomerToken } from './access-token';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CustomerServiceProvider {

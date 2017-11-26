@@ -3,15 +3,15 @@
         <img class="logo-app" src="assets/imgs/logo.png" />
     </div>
     <ion-list class="input-fields">
-        <ion-item class="input-field">
-            <ion-label class="icon-right">
-                <ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
+        <ion-item class="input-field label-left">
+            <ion-label class="label">
+                <ion-icon class="icon" ios="ios-mail" md="md-mail"></ion-icon>
             </ion-label>
             <ion-input type="text" [(ngModel)]='customer.email' placeholder="Email"></ion-input>
         </ion-item>
-        <ion-item class="input-field">
-            <ion-label class="icon-right">
-                <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+        <ion-item class="input-field label-left">
+            <ion-label class="label">
+                <ion-icon class="icon icon-lock" ios="ios-lock" md="ios-lock"></ion-icon>
             </ion-label>
             <ion-input type="password" [(ngModel)]='customer.password' placeholder="Contraseña"></ion-input>
         </ion-item>

@@ -1,4 +1,19 @@
 page-register-user {
+    ion-header.header {
+        .toolbar {
+            .toolbar-background-md, .toolbar-background-ios, .toolbar-background-wp {
+                border: none;
+            }
+        }
+    }
+    ion-content {
+        .fixed-content {
+            margin-top: 0 !important;
+        }
+        .scroll-content {
+            margin-top: 16px !important;
+        }
+    }
     .section-logo {
         margin-top: 16px;
         header {

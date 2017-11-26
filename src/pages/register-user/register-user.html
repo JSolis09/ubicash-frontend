@@ -9,30 +9,30 @@
 	</div>
     <form novalidate [formGroup]="user">
         <ion-list class="input-fields">
-            <ion-item class="input-field">
-                <ion-label class="icon-right">
-                    <ion-icon class="icon" ios="ios-person-outline" md="ios-person"></ion-icon>
+            <ion-item class="input-field label-left">
+                <ion-label class="label">
+                    <ion-icon class="icon" ios="ios-person" md="md-person"></ion-icon>
                 </ion-label>
                 <ion-input type="text" formControlName="username" placeholder="Usuario"></ion-input>
             </ion-item>
-            <ion-item class="input-field">
-                <ion-label class="icon-right">
-                    <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+            <ion-item class="input-field label-left">
+                <ion-label class="label">
+                    <ion-icon class="icon icon-lock" ios="ios-lock" md="md-lock"></ion-icon>
                 </ion-label>
                 <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
             </ion-item>
-            <ion-item class="input-field">
-                <ion-label class="icon-right">
-                    <ion-icon class="icon icon-lock" ios="ios-lock-outline" md="ios-lock"></ion-icon>
+            <ion-item class="input-field label-left">
+                <ion-label class="label">
+                    <ion-icon class="icon icon-lock" ios="ios-lock" md="md-lock"></ion-icon>
                 </ion-label>
                 <ion-input type="password" formControlName="repeatPassword" placeholder="Repetir contraseña"></ion-input>
             </ion-item>
             <div class="error" *ngIf="unmatchPassword(user) && user.get('repeatPassword').touched">
                 Las contraseñas no coinciden.
             </div>
-            <ion-item class="input-field">
-                <ion-label class="icon-right">
-                    <ion-icon class="icon" ios="ios-mail-outline" md="md-mail"></ion-icon>
+            <ion-item class="input-field label-left">
+                <ion-label class="label">
+                    <ion-icon class="icon" ios="ios-mail" md="md-mail"></ion-icon>
                 </ion-label>
                 <ion-input type="text"formControlName="email" placeholder="Email"></ion-input>
             </ion-item>

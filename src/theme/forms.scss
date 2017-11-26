@@ -42,15 +42,37 @@ $color-input: $white;
         .item-inner {
             border: none;
             padding-right: 0;
-            .input {
-                padding-right: 16px;
+        }
+        &.label-right {
+            .label {
+                display: block;
+                position: absolute;
+                right: 0;
+                margin: auto .5em;
+            }
+            .item-inner {
+                .input {
+                    padding-right: 16px;
+                }
             }
         }
-        .icon-right {
-            display: block;
-            position: absolute;
-            right: 0;
-            margin: auto .5em;
+        &.label-left {
+            .label {
+                display: block;
+                position: absolute;
+                left: 0;
+                margin: auto .5em;
+            }
+            .item-inner {
+                .input {
+                    &.input-md {
+                        padding-left: 1.8rem;
+                    }
+                    &.input-ios {
+                        padding-left: 1rem;
+                    }
+                }
+            }
         }
         .label-item {
             padding-left: 4px;
@@ -68,7 +90,9 @@ $color-input: $white;
         .icon {
             color: $white;
             &.icon-lock {
-                font-size: 1.6rem;
+                &.icon-md {
+                    font-size: 2rem;
+                }
             }
         }
     }
