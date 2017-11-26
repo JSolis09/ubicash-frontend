@@ -3,7 +3,10 @@ import {
     GoogleMaps,
     GoogleMap,
     GoogleMapsEvent,
-    GoogleMapOptions
+    GoogleMapOptions,
+    GoogleMapsMapTypeId,
+    CameraPosition,
+    ILatLng
 } from '@ionic-native/google-maps';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
 import { settings } from '../../environments/environment';
@@ -25,54 +28,51 @@ export class MapComponent implements OnInit {
             let mapOptions: GoogleMapOptions = {
                 camera: {
                     zoom: 18,
-                    tilt:30,
-                }
+                    tilt:30
+                },
+                mapType: GoogleMapsMapTypeId.ROADMAP
             };
-            this.getLocation()
-                .then((coords) => {
-                    mapOptions.camera
-                        .target = {
-                            lat: coords.latitude,
-                            lng: coords.longitude
-                        };
-                    this.init(mapOptions);
-                })
-                .catch(() => {
-                    if (!!settings && !!settings.defaultLocation) {
-                        mapOptions.camera
-                            .target = {
-                                lat: settings.defaultLocation.lat,
-                                lng: settings.defaultLocation.lng
-                            }
-                    }
-                    this.init(mapOptions);
-                });
+            this.init(mapOptions);
         }
 
         private init(mapOptions: GoogleMapOptions): void {
             this.map = this.googleMaps.create(this.mapElement.nativeElement, mapOptions);
-            if (!!mapOptions && !!mapOptions.camera.target) {
-                this.map
+            this.map
                 .one(GoogleMapsEvent.MAP_READY)
                 .then(() => {
-                    this.map
-                        .addMarker({
-                            title: 'Me',
-                            icon: 'blue',
-                            animation: 'DROP',
-                            position: {
-                                lat: mapOptions.camera.target.lat,
-                                lng: mapOptions.camera.target.lng
+                    this.getLocation()
+                        .then((coords: Coordinates) => {
+                            const cameraSettings: CameraPosition<ILatLng> = {
+                                target: {
+                                    lat: coords.latitude,
+                                    lng: coords.longitude
+                                },
+                                zoom: 18,
+                                tilt:30,
                             }
-                        })
-                        .then(marker => {
-                            marker.on(GoogleMapsEvent.MARKER_CLICK)
-                                .subscribe(() => {
-                                    console.log('clicked');
+                            this.map
+                                .animateCamera(cameraSettings)
+                                .then((response) => {
+                                    console.log(response);
+                                })
+                            this.map
+                                .addMarker({
+                                    title: 'Mi ubicación',
+                                    icon: 'blue',
+                                    animation: 'DROP',
+                                    position: {
+                                        lat: cameraSettings.target.lat,
+                                        lng: cameraSettings.target.lng
+                                    }
+                                })
+                                .then(marker => {
+                                    marker.on(GoogleMapsEvent.MARKER_CLICK)
+                                    .subscribe((response) => {
+                                        console.log(response);
+                                    });
                                 });
                         });
                 });
-            }
         }
 
         private getLocation(): Promise<Coordinates> {
@@ -83,7 +83,17 @@ export class MapComponent implements OnInit {
                         latitude: resp.coords.latitude,
                         longitude: resp.coords.longitude
                     } as Coordinates
+                })
+                .catch((error) => {
+                    if (settings && settings.defaultLocation) {
+                        return {
+                            latitude: settings.defaultLocation.lat,
+                            longitude: settings.defaultLocation.lng
+                        } as Coordinates;
+                    } else {
+                        return {} as Coordinates;
+                    }
                 });
         }
 
-}
+    }
