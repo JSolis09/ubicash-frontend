@@ -69,6 +69,7 @@ export class LoginPage {
                         this.customerService
                             .loginWithFbAccessToken(data)
                             .subscribe((response) => {
+                                console.log(response);
                                 loading.dismiss();
                                 this.customerService
                                     .setCustomerToken(response);

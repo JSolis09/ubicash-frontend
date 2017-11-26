@@ -33,22 +33,18 @@ export class ApiServiceProvider {
         return this;
     }
 
-    public get(api: string): Observable<any> {
+    public get(api: string, options?: any): Observable<any> {
         const host: string = `${this.host}${api}`;
-        const options: any = {
-            headers: new Headers(this.headers)
-        };
+        options = options || {};
         return this.http
             .get(host, options)
             .map((response) => response.json())
             .catch((error: Error) => this.errorHandler(error));
     }
 
-    public post(api: string, data: any): Observable<any> {
+    public post(api: string, data: any, options?: any): Observable<any> {
         const host: string = `${this.host}/api/${api}`;
-        const options: any = {
-            headers: new Headers(this.headers)
-        };
+        options = options || {};
         return this.http
             .post(host, data, options)
             .map((response) => response.json())

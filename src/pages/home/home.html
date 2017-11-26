@@ -1,14 +1,13 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>
-            <button ion-button menuToggle>
-                    <ion-icon class="icon" ios="ios-menu" md="md-menu"></ion-icon>
-            </button> Búsqueda
-        </ion-title>
+        <button class="menu" ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Búsqueda</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
-    <ion-list>
+<ion-content>
+    <ion-list class="search-section">
         <ion-item class="input-search">
             <ion-label class="label-search">
                 <ion-icon class="icon" ios="ios-search" md="md-search"></ion-icon>
@@ -18,7 +17,5 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <div class="map-section" padding>
-        <map></map>
-    </div>
+    <map></map>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
 
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { CustomerServiceProvider } from '../../providers/customer/customer-service';
@@ -14,9 +15,10 @@ export class BankServiceProvider {
 
     getAll(): Observable<Bank[]> {
         const customerToken: CustomerToken = this.customerService.getCustomerToken();
+        const params = new URLSearchParams();
+        params.set('access_token', customerToken.id);
         return this.apiService
-            .setHeader('X-Access-Token', customerToken.id)
-            .get('/api/Banks')
+            .get('/api/Banks', { search: params });
     }
 
 }

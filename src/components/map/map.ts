@@ -6,6 +6,7 @@ import {
     GoogleMapOptions
 } from '@ionic-native/google-maps';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
+import { settings } from '../../environments/environment';
 
 @Component({
     selector: 'map',
@@ -37,6 +38,13 @@ export class MapComponent implements OnInit {
                     this.init(mapOptions);
                 })
                 .catch(() => {
+                    if (!!settings && !!settings.defaultLocation) {
+                        mapOptions.camera
+                            .target = {
+                                lat: settings.defaultLocation.lat,
+                                lng: settings.defaultLocation.lng
+                            }
+                    }
                     this.init(mapOptions);
                 });
         }
