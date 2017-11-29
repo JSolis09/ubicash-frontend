@@ -4,3 +4,11 @@ export class Bank {
     short_name: string;
     code: string;
 }
+
+export class BankDetail {
+    id: string;
+    address: string;
+    lat: number;
+    lng: number;
+    detail: string;
+}

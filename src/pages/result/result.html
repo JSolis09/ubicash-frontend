@@ -3,7 +3,7 @@
         <button class="menu" ion-button menuToggle disabled>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Búsqueda</ion-title>
+        <ion-title>Resultado</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content>
@@ -17,5 +17,5 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <map [animation]='true'></map>
+    <map [results]="bankDetails" (clickMarker)="onClickMarker($event)"></map>
 </ion-content>

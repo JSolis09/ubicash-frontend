@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPageModule } from '../pages/login/login.module';
 import { RegisterUserPageModule } from '../pages/register-user/register-user.module';
+import { ResultPageModule } from  '../pages/result/result.module';
 import { AppiServiceModule } from '../providers/api-service/api-service.module';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
 import { IonicStorageModule } from '@ionic/storage';
@@ -26,7 +27,8 @@ import { BankServiceProvider } from '../providers/bank/bank-service';
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(),
         LoginPageModule,
-        RegisterUserPageModule
+        RegisterUserPageModule,
+        ResultPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
