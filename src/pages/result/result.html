@@ -1,21 +1,38 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar class="result-nav">
         <button class="menu" ion-button menuToggle disabled>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Resultado</ion-title>
+        <ion-title class="title">Resultado</ion-title>
+        <ion-item class="switchView">
+            <ion-label> {{ !typeView ? 'Mapa': 'Lista' }}</ion-label>
+            <ion-toggle color="primary" checked="false" [(ngModel)]="typeView"></ion-toggle>
+        </ion-item>
     </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content [ngSwitch]="typeView">
     <ion-list class="search-section">
         <ion-item class="input-search">
             <ion-label class="label-search">
                 <ion-icon class="icon" ios="ios-search" md="md-search"></ion-icon>
             </ion-label>
-            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Buscar bancos" (ionChange)="changeBank()" >
+            <ion-select class="select-search" [(ngModel)]="bankId" placeholder="Buscar bancos" (ionChange)="changeBank()" >
                 <ion-option *ngFor="let bank of (banks | async)" [value]="bank.id">{{bank.short_name}}</ion-option>
             </ion-select>
         </ion-item>
     </ion-list>
-    <map [results]="bankDetails" (clickMarker)="onClickMarker($event)"></map>
+    <div class="section-map" *ngSwitchCase="false">
+        <map [results]="bankDetails" (clickMarker)="onClickMarker($event)"></map>
+        <!-- <marker-detail [bankDetail]="selectedBankDetail"></marker-detail> -->
+    </div>
+    <div class="section-list" *ngSwitchCase="true">
+        <ion-list class="list">
+            <ion-item class="item" *ngFor="let bankDetail of bankDetails">
+                <div class="description">
+                    <b>{{ bankDetail.bank?.name }}</b> {{ bankDetail.address }}, {{ bankDetail.detail }}
+                    <span class="distance">({{ bankDetail.distance | number:'1.1-2' }} km)</span>
+                </div>
+            </ion-item>
+        </ion-list>
+    </div>
 </ion-content>

@@ -10,9 +10,9 @@ import {
     Marker,
     MarkerOptions
 } from '@ionic-native/google-maps';
-import { Geolocation, Coordinates } from '@ionic-native/geolocation';
-import { settings } from '../../environments/environment';
+import { Coordinates } from '@ionic-native/geolocation';
 import { BankDetail } from '../../providers/bank/bank';
+import { UtilProvider } from '../../providers/util/util';
 
 @Component({
     selector: 'map',
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit, OnChanges {
     private markers: Marker[];
     private userMarker: Marker;
     private isReady: boolean;
+    public bankDetail: BankDetail;
 
     @Input() animation: boolean;
     @Input() results: BankDetail[];
@@ -30,126 +31,109 @@ export class MapComponent implements OnInit, OnChanges {
     @ViewChild('map') mapElement: ElementRef;
 
     constructor(private googleMaps: GoogleMaps,
-        private geolocation: Geolocation) {
+                private utilProvider: UtilProvider) {
             this.isReady = false;
             this.markers = [];
             this.results = this.results || [];
-         }
+    }
 
-        ngOnChanges(): void {
-            if (!!this.results && this.isReady) {
-                this.clearMarkers();
-                this.addMarker();
-            }
+    ngOnChanges(): void {
+        if (!!this.results && this.isReady) {
+            this.clearMarkers();
+            this.addMarker();
         }
+    }
 
-        ngOnInit(): void {
-            let mapOptions: GoogleMapOptions = {
-                camera: {
-                    zoom: 18,
-                    tilt:30
-                },
-                mapType: GoogleMapsMapTypeId.ROADMAP
-            };
-            this.init(mapOptions);
-        }
-
-        private init(mapOptions: GoogleMapOptions): void {
-            this.map = this.googleMaps.create(this.mapElement.nativeElement, mapOptions);
-            this.map
-                .one(GoogleMapsEvent.MAP_READY)
-                .then(() => {
-                    this.getLocation()
-                        .then((coords: Coordinates) => {
-                            this.moveCamera(coords)
-                                .then((cameraSettings) => {
-                                    this.map
-                                        .addMarker({
-                                            title: '¡Estás aquí!',
-                                            icon: 'assets/icon/user-marker.png',
-                                            animation: 'DROP',
-                                            position: {
-                                                lat: cameraSettings.target.lat,
-                                                lng: cameraSettings.target.lng
-                                            }
-                                        })
-                                        .then((marker) => {
-                                            this.userMarker = marker;
-                                            marker.on(GoogleMapsEvent.MARKER_CLICK)
-                                                .subscribe((response) => {
-                                                    console.log(response);
-                                                });
-                                        });
-                                    this.addMarker();
-                                    this.isReady = true;
-                                })
-                        });
-                });
-        }
-
-        private moveCamera(coords: Coordinates): Promise<CameraPosition<ILatLng>> {
-            const cameraSettings: CameraPosition<ILatLng> = {
-                target: {
-                    lat: coords.latitude,
-                    lng: coords.longitude
-                },
+    ngOnInit(): void {
+        let mapOptions: GoogleMapOptions = {
+            camera: {
                 zoom: 18,
                 tilt:30
-            };
-            const camera: Promise<any> = !!this.animation ? this.map.animateCamera(cameraSettings) : this.map.moveCamera(cameraSettings);
-            return camera.then((response) => cameraSettings);
-        }
-
-        private getLocation(): Promise<Coordinates> {
-            return this.geolocation
-                .getCurrentPosition()
-                .then((resp) => {
-                    return {
-                        latitude: resp.coords.latitude,
-                        longitude: resp.coords.longitude
-                    } as Coordinates
-                })
-                .catch((error) => {
-                    if (settings && settings.defaultLocation) {
-                        return {
-                            latitude: settings.defaultLocation.lat,
-                            longitude: settings.defaultLocation.lng
-                        } as Coordinates;
-                    } else {
-                        return {} as Coordinates;
-                    }
-                });
-        }
-
-        private addMarker(): void {
-            this.results
-                .forEach((bankDetail: BankDetail) => {
-                    const markerOptions: MarkerOptions = {
-                        title: bankDetail.address,
-                        icon: 'assets/icon/bcp-marker.png',
-                        animation: 'DROP',
-                        position: {
-                            lat: bankDetail.lat,
-                            lng: bankDetail.lng
-                        }
-                    };
-                    this.map
-                        .addMarker(markerOptions)
-                        .then((marker: Marker) => {
-                            this.markers.push(marker);
-                            marker.on(GoogleMapsEvent.MARKER_CLICK)
-                                .subscribe((response) => {
-                                    this.clickMarker.emit(bankDetail);
-                                });
-                        });
-                });
-        }
-
-        private clearMarkers(): void {
-            this.markers
-                .forEach((marker) => {
-                    marker.remove();
-                })
-        }
-
+            },
+            mapType: GoogleMapsMapTypeId.ROADMAP
+        };
+        this.init(mapOptions);
     }
+
+    private init(mapOptions: GoogleMapOptions): void {
+        this.map = this.googleMaps.create(this.mapElement.nativeElement, mapOptions);
+        this.map
+            .one(GoogleMapsEvent.MAP_READY)
+            .then(() => {
+                console.log('Map Ready ...')
+                this.utilProvider
+                    .getLocation()
+                    .then((coords: Coordinates) => {
+                        console.log(`Location ${ JSON.stringify(coords) }`)
+                        this.moveCamera(coords)
+                            .then((cameraSettings) => {
+                                console.log(cameraSettings);
+                                this.map
+                                    .addMarker({
+                                        title: '¡Estás aquí!',
+                                        icon: 'assets/icon/user-marker.png',
+                                        animation: 'DROP',
+                                        position: {
+                                            lat: cameraSettings.target.lat,
+                                            lng: cameraSettings.target.lng
+                                        }
+                                    })
+                                    .then((marker) => {
+                                        this.userMarker = marker;
+                                        marker.on(GoogleMapsEvent.MARKER_CLICK)
+                                            .subscribe((response) => {
+                                                console.log(response);
+                                            });
+                                    });
+                                this.addMarker();
+                                this.isReady = true;
+                            });
+                    });
+            });
+    }
+
+    private moveCamera(coords: Coordinates): Promise<CameraPosition<ILatLng>> {
+        const cameraSettings: CameraPosition<ILatLng> = {
+            target: {
+                lat: coords.latitude,
+                lng: coords.longitude
+            },
+            zoom: 18,
+            tilt:30
+        };
+        const camera: Promise<any> = !!this.animation ? this.map.animateCamera(cameraSettings) : this.map.moveCamera(cameraSettings);
+        return camera.then((response) => cameraSettings);
+    }
+
+    private addMarker(): void {
+        this.results
+        .forEach((bankDetail: BankDetail) => {
+            const markerOptions: MarkerOptions = {
+                title: bankDetail.address,
+                icon: 'assets/icon/bcp-marker.png',
+                animation: 'DROP',
+                position: {
+                    lat: bankDetail.lat,
+                    lng: bankDetail.lng
+                }
+            };
+            this.map
+            .addMarker(markerOptions)
+            .then((marker: Marker) => {
+                this.markers.push(marker);
+                marker.on(GoogleMapsEvent.MARKER_CLICK)
+                .subscribe((response) => {
+                    this.clickMarker.emit(bankDetail);
+                });
+            });
+        });
+    }
+
+    private clearMarkers(): void {
+        this.markers
+        .forEach((marker) => {
+            marker.remove();
+        })
+    }
+
+}

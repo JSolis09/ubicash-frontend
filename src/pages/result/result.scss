@@ -1,3 +1,29 @@
 page-result {
-
+    .result-nav {
+        display: flex;
+        .title {
+            display: inline-flex;
+        }
+        .switchView {
+            display: inline-flex;
+            background: none;
+            width: auto;
+            color: white;
+            .item-inner {
+                border: none;
+            }
+        }
+    }
+    .section-map {
+        height: 100%;
+    }
+    .section-list {
+        .list {
+            .item {
+                .description {
+                    white-space: initial;
+                }
+            }
+        }
+    }
 }

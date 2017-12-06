@@ -29,4 +29,9 @@ export class BankServiceProvider {
             .get(`/api//Banks/${bankId}/bankDetails`, { search: params });
     }
 
+    getBankById(banks: Bank[], bankId: string): Bank {
+        banks = banks || [];
+        return banks.filter((bank) => bank.id === bankId)[0];
+    }
+
 }

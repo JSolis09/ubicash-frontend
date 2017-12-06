@@ -14,6 +14,8 @@ import { AppiServiceModule } from '../providers/api-service/api-service.module';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
 import { IonicStorageModule } from '@ionic/storage';
 import { BankServiceProvider } from '../providers/bank/bank-service';
+import { UtilProvider } from '../providers/util/util';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
     declarations: [
@@ -36,11 +38,13 @@ import { BankServiceProvider } from '../providers/bank/bank-service';
         HomePage
     ],
     providers: [
+        Geolocation,
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         CustomerServiceProvider,
-        BankServiceProvider
+        BankServiceProvider,
+        UtilProvider
     ]
 })
 export class AppModule {}

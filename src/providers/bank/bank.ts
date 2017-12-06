@@ -11,4 +11,6 @@ export class BankDetail {
     lat: number;
     lng: number;
     detail: string;
+    distance: number;
+    bank?: Bank;
 }
