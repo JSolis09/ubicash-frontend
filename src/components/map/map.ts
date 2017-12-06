@@ -60,14 +60,11 @@ export class MapComponent implements OnInit, OnChanges {
         this.map
             .one(GoogleMapsEvent.MAP_READY)
             .then(() => {
-                console.log('Map Ready ...')
                 this.utilProvider
                     .getLocation()
                     .then((coords: Coordinates) => {
-                        console.log(`Location ${ JSON.stringify(coords) }`)
                         this.moveCamera(coords)
                             .then((cameraSettings) => {
-                                console.log(cameraSettings);
                                 this.map
                                     .addMarker({
                                         title: '¡Estás aquí!',
@@ -81,9 +78,7 @@ export class MapComponent implements OnInit, OnChanges {
                                     .then((marker) => {
                                         this.userMarker = marker;
                                         marker.on(GoogleMapsEvent.MARKER_CLICK)
-                                            .subscribe((response) => {
-                                                console.log(response);
-                                            });
+                                            .subscribe((response) => { });
                                     });
                                 this.addMarker();
                                 this.isReady = true;
