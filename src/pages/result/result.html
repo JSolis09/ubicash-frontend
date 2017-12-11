@@ -22,8 +22,7 @@
         </ion-item>
     </ion-list>
     <div class="section-map" *ngSwitchCase="false">
-        <map [results]="bankDetails" (clickMarker)="onClickMarker($event)"></map>
-        <!-- <marker-detail [bankDetail]="selectedBankDetail"></marker-detail> -->
+        <map [results]="bankDetails"></map>
     </div>
     <div class="section-list" *ngSwitchCase="true">
         <ion-list class="list">

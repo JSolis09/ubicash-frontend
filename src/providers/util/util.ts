@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
+import { Spherical, ILatLng } from '@ionic-native/google-maps';
 import { settings } from '../../environments/environment';
 
 @Injectable()
@@ -7,7 +8,18 @@ export class UtilProvider {
 
     constructor(private geolocation: Geolocation) { }
 
-    public getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2): number {
+    public getDistanceBetween(from: ILatLng, to: ILatLng ): number {
+        let distance: number;
+        try {
+            distance = Spherical.computeDistanceBetween(from, to)/1000;
+        } catch(e) {
+            distance = this.getDistanceFromLatLonInKm(from.lat, from.lng, to.lat, to.lng);
+        } finally {
+            return +distance.toFixed(2);
+        }
+    }
+
+    public getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
         var R = 6371;
         var dLat = this.deg2rad(lat2-lat1);
         var dLon = this.deg2rad(lon2-lon1);

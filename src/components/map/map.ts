@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ElementRef, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, Input, OnChanges, NgZone } from '@angular/core';
 import {
     GoogleMaps,
     GoogleMap,
@@ -27,10 +27,10 @@ export class MapComponent implements OnInit, OnChanges {
 
     @Input() animation: boolean;
     @Input() results: BankDetail[];
-    @Output() clickMarker: EventEmitter<BankDetail> = new EventEmitter<BankDetail>();
     @ViewChild('map') mapElement: ElementRef;
 
     constructor(private googleMaps: GoogleMaps,
+                private zone: NgZone,
                 private utilProvider: UtilProvider) {
             this.isReady = false;
             this.markers = [];
@@ -102,33 +102,36 @@ export class MapComponent implements OnInit, OnChanges {
 
     private addMarker(): void {
         this.results
-        .forEach((bankDetail: BankDetail) => {
-            const markerOptions: MarkerOptions = {
-                title: bankDetail.address,
-                icon: 'assets/icon/bcp-marker.png',
-                animation: 'DROP',
-                position: {
-                    lat: bankDetail.lat,
-                    lng: bankDetail.lng
-                }
-            };
-            this.map
-            .addMarker(markerOptions)
-            .then((marker: Marker) => {
-                this.markers.push(marker);
-                marker.on(GoogleMapsEvent.MARKER_CLICK)
-                .subscribe((response) => {
-                    this.clickMarker.emit(bankDetail);
-                });
+            .forEach((bankDetail: BankDetail) => {
+                const markerOptions: MarkerOptions = {
+                    icon: 'assets/icon/bcp-marker.png',
+                    animation: 'DROP',
+                    position: {
+                        lat: bankDetail.lat,
+                        lng: bankDetail.lng
+                    }
+                };
+                this.map
+                    .addMarker(markerOptions)
+                    .then((marker: Marker) => {
+                        this.markers.push(marker);
+                        marker.addEventListener(GoogleMapsEvent.MARKER_CLICK)
+                            .subscribe((response) => {
+                                this.zone
+                                    .run(() => {
+                                        this.bankDetail = Object.assign<any, BankDetail>({}, bankDetail);
+                                    });
+                            });
+                    });
             });
-        });
     }
 
     private clearMarkers(): void {
+        this.bankDetail = null;
         this.markers
-        .forEach((marker) => {
-            marker.remove();
-        })
+            .forEach((marker) => {
+                marker.remove();
+            });
     }
 
 }

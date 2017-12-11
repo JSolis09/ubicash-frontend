@@ -18,7 +18,7 @@ export class ResultPage {
     public bank: Bank;
     public banks: Observable<Bank[]>;
     public bankDetails: BankDetail[];
-    public selectedBankDetail: BankDetail;
+    public bankDetail: BankDetail;
     public typeView: boolean = false;
 
     constructor(private alertCtrl: AlertController,
@@ -26,6 +26,7 @@ export class ResultPage {
                 private loadingCtrl: LoadingController,
                 private utilProvider: UtilProvider,
                 private bankService: BankServiceProvider) {
+        this.bankDetails = [];
         this.banks = this.bankService.getAll();
         this.banks
             .subscribe((banks) => {
@@ -74,18 +75,19 @@ export class ResultPage {
         bankDetails.forEach((bankDetail) => {
             bankDetail.bank = bank;
             if (!!this.myLocation) {
-                bankDetail.distance = this.utilProvider
-                    .getDistanceFromLatLonInKm(bankDetail.lat, bankDetail.lng, this.myLocation.latitude, this.myLocation.longitude);
+                bankDetail.distance = this.utilProvider.getDistanceBetween({
+                    lat: bankDetail.lat,
+                    lng: bankDetail.lng
+                }, {
+                    lat: this.myLocation.latitude,
+                    lng: this.myLocation.longitude
+                });
             }
         });
     }
 
     public changeBank(): void {
         this.getBankDetails(this.bankId);
-    }
-
-    public onClickMarker($event: BankDetail): void {
-        this.selectedBankDetail = Object.assign<any , BankDetail>({}, $event);
     }
 
 }

@@ -53,6 +53,9 @@ page-register-user, page-home, page-result {
                     color: $white;
                 }
             }
+            .toolbar-content {
+                display: flex;
+            }
             ion-title {
                 .toolbar-title {
                     color: $white;
