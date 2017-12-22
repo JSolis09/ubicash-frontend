@@ -26,12 +26,15 @@
     </div>
     <div class="section-list" *ngSwitchCase="true">
         <ion-list class="list">
-            <ion-item class="item" *ngFor="let bankDetail of bankDetails">
+            <ion-item class="item" *ngFor="let bankDetail of bankDetailList">
                 <div class="description">
                     <b>{{ bankDetail.bank?.name }}</b> {{ bankDetail.address }}, {{ bankDetail.detail }}
-                    <span class="distance">({{ bankDetail.distance | number:'1.1-2' }} km)</span>
+                    <span class="distance">(Aprox. {{ bankDetail.distance | number:'1.1-2' }} km)</span>
                 </div>
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll (ionInfinite)="getMoreBankDetail($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </div>
 </ion-content>
