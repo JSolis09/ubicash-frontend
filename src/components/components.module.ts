@@ -1,16 +1,28 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { IonicModule } from 'ionic-angular';
 import { MapComponent } from './map/map';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
-import { Geolocation } from '@ionic-native/geolocation';
+import { UtilProvider } from '../providers/util/util';
+import { MarkerDetailComponent } from './marker-detail/marker-detail';
 
 @NgModule({
-	declarations: [MapComponent],
-    imports: [],
+	declarations: [
+        MapComponent,
+        MarkerDetailComponent
+    ],
+    imports: [
+        BrowserModule,
+        IonicModule
+    ],
     providers: [
-        Geolocation,
+        UtilProvider,
         GoogleMaps
     ],
-	exports: [MapComponent]
+	exports: [
+        MapComponent,
+        MarkerDetailComponent
+    ]
 })
 export class ComponentsModule {}

@@ -9,10 +9,13 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPageModule } from '../pages/login/login.module';
 import { RegisterUserPageModule } from '../pages/register-user/register-user.module';
+import { ResultPageModule } from  '../pages/result/result.module';
 import { AppiServiceModule } from '../providers/api-service/api-service.module';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
 import { IonicStorageModule } from '@ionic/storage';
 import { BankServiceProvider } from '../providers/bank/bank-service';
+import { UtilProvider } from '../providers/util/util';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
     declarations: [
@@ -26,7 +29,8 @@ import { BankServiceProvider } from '../providers/bank/bank-service';
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(),
         LoginPageModule,
-        RegisterUserPageModule
+        RegisterUserPageModule,
+        ResultPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -34,11 +38,13 @@ import { BankServiceProvider } from '../providers/bank/bank-service';
         HomePage
     ],
     providers: [
+        Geolocation,
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         CustomerServiceProvider,
-        BankServiceProvider
+        BankServiceProvider,
+        UtilProvider
     ]
 })
 export class AppModule {}

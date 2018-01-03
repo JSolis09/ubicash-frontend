@@ -4,7 +4,7 @@ import { URLSearchParams } from '@angular/http';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { CustomerServiceProvider } from '../../providers/customer/customer-service';
 import { Observable } from 'rxjs/Observable';
-import { Bank } from './bank';
+import { Bank, BankDetail } from './bank';
 import { CustomerToken } from '../customer/access-token';
 
 @Injectable()
@@ -19,6 +19,19 @@ export class BankServiceProvider {
         params.set('access_token', customerToken.id);
         return this.apiService
             .get('/api/Banks', { search: params });
+    }
+
+    getBankDetails(bankId: string): Observable<BankDetail[]> {
+        const customerToken: CustomerToken = this.customerService.getCustomerToken();
+        const params = new URLSearchParams();
+        params.set('access_token', customerToken.id);
+        return this.apiService
+            .get(`/api//Banks/${bankId}/bankDetails`, { search: params });
+    }
+
+    getBankById(banks: Bank[], bankId: string): Bank {
+        banks = banks || [];
+        return banks.filter((bank) => bank.id === bankId)[0];
     }
 
 }

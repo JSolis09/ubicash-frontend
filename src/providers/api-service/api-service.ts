@@ -8,6 +8,11 @@ import 'rxjs/add/observable/throw';
 
 import { settings } from '../../environments/environment';
 
+export interface Filter {
+    limit: number,
+    skip: number
+}
+
 @Injectable()
 export class ApiServiceProvider {
     private host: string = settings.host;

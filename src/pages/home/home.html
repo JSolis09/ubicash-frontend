@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <button class="menu" ion-button menuToggle>
+        <button class="menu" ion-button menuToggle disabled>
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Búsqueda</ion-title>
@@ -12,10 +12,10 @@
             <ion-label class="label-search">
                 <ion-icon class="icon" ios="ios-search" md="md-search"></ion-icon>
             </ion-label>
-            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Buscar bancos" >
-                <ion-option *ngFor="let bank of banks | async" [value]="bank.code">{{bank.short_name}}</ion-option>
+            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Buscar bancos" (ionChange)="changeBank()" >
+                <ion-option *ngFor="let bank of (banks | async)" [value]="bank.id">{{bank.short_name}}</ion-option>
             </ion-select>
         </ion-item>
     </ion-list>
-    <map></map>
+    <map [animation]='true'></map>
 </ion-content>

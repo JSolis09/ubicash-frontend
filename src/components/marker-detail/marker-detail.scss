@@ -1,0 +1,13 @@
+marker-detail {
+    position: absolute;
+    bottom: 1em;
+    width: 100%;
+    .bank-detail {
+        background-color: $white;
+        padding: 0.1em 1em;
+        border-bottom: 1px solid darkblue;
+        .title, .description {
+            padding: 0.5em 0;
+        }
+    }
+}
