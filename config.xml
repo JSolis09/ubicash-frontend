@@ -3,7 +3,7 @@
     <name>Ubicash</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="jesussolism09@gmail.com" href="http://ionicframework.com/">JS</author>
-    <content original-src="index.html" src="http://10.36.70.51:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
