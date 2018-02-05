@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Customer, FacebookCustomer } from './customer';
+import { Customer, FacebookCustomer, PasswordReset } from './customer';
 import { CustomerToken } from './access-token';
 import { ApiServiceProvider } from '../../providers/api-service/api-service';
 import { Observable } from 'rxjs/Observable';
@@ -41,6 +41,16 @@ export class CustomerServiceProvider {
     public loginWithFbAccessToken(data: FacebookCustomer): Observable<CustomerToken> {
         return this.apiService
             .post('FacebookAccessTokens/login', data);
+    }
+
+    public resetPassword(data: PasswordReset): Observable<CustomerToken> {
+        return this.apiService
+            .post('Customers/reset', data);
+    }
+
+    public resetPasswordCode(data: PasswordReset): Observable<CustomerToken> {
+        return this.apiService
+            .post('Customers/reset-password-code', data);
     }
 
 }

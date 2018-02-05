@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Customer, FacebookCustomer } from '../../providers/customer/customer';
 import { CustomerToken } from '../../providers/customer/access-token';
 import { CustomerServiceProvider } from '../../providers/customer/customer-service';
+import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 import { RegisterUserPage } from '../register-user/register-user';
 
 import { HomePage } from '../home/home';
@@ -32,6 +33,10 @@ export class LoginPage {
 
     goHome(): void {
         this.navCtrl.setRoot(HomePage);
+    }
+
+    goForgotPassword(): void {
+        this.navCtrl.push(ForgotPasswordPage);
     }
 
     goRegister(): void {

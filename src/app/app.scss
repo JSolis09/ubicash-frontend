@@ -36,7 +36,7 @@ ion-content {
     height: 8em;
 }
 
-page-register-user, page-home, page-result {
+page-register-user, page-home, page-result, page-forgot-password  {
     ion-header.header {
         .toolbar {
             .back-button {
@@ -124,5 +124,30 @@ page-home, page-result {
     }
     .map-section {
         min-height: 350px;
+    }
+}
+
+page-register-user, page-forgot-password {
+    ion-header.header {
+        .toolbar {
+            .toolbar-background-md, .toolbar-background-ios, .toolbar-background-wp {
+                border: none;
+            }
+        }
+    }
+    ion-content {
+        .fixed-content {
+            margin-top: 0 !important;
+        }
+        .scroll-content {
+            margin-top: 16px !important;
+        }
+    }
+    .section-logo {
+        margin-top: 16px;
+        header {
+            margin-top: 8px;
+            text-align: center;
+        }
     }
 }

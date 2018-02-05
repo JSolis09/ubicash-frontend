@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { ComponentsModule } from '../components/components.module';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { ForgotPasswordPageModule } from '../pages/forgot-password/forgot-password.module';
 import { LoginPageModule } from '../pages/login/login.module';
 import { RegisterUserPageModule } from '../pages/register-user/register-user.module';
 import { ResultPageModule } from  '../pages/result/result.module';
@@ -28,6 +29,7 @@ import { Geolocation } from '@ionic-native/geolocation';
         ComponentsModule,
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(),
+        ForgotPasswordPageModule,
         LoginPageModule,
         RegisterUserPageModule,
         ResultPageModule
