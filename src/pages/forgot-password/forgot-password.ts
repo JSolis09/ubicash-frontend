@@ -49,6 +49,7 @@ export class ForgotPasswordPage implements OnInit {
                         this.isSent = true;
                     });
             }, () => {
+                loading.dismiss();
                 this.isSent = false;
                 const alert = this.alertCtrl.create({
                     title: 'Error',
