@@ -13,3 +13,9 @@ export class FacebookCustomer {
     public expires: number;
     public token: string = '';
 }
+
+export class PasswordReset {
+    public email: string = '';
+    public password?: string = '';
+    public code?: string;
+}

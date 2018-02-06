@@ -105,7 +105,6 @@ export class MapComponent implements OnInit, OnChanges {
             .forEach((bankDetail: BankDetail) => {
                 const markerOptions: MarkerOptions = {
                     icon: 'assets/icon/bcp-marker.png',
-                    animation: 'DROP',
                     position: {
                         lat: bankDetail.lat,
                         lng: bankDetail.lng
