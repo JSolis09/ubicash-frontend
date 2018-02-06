@@ -90,7 +90,7 @@ export class LoginPage {
                                         if (error && error.code === 'EMAIL_EXISTS'){
                                             message = 'El email ya se encuentra registrado';
                                         }else {
-                                            message = 'Ocurrió un error al iniciar sesión, Intentelo más tarde';
+                                            message = 'Ocurrió un error al iniciar sesión, Inténtelo más tarde';
                                         }
                                         const alert = this.alertCtrl.create({
                                             title: 'Error',
