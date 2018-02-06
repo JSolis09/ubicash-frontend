@@ -1,0 +1,11 @@
+// @import '../theme/colors';
+
+fb-button {
+    button {
+        &.btn {
+            &.btn-fb {
+                background-color: $blue-fb;
+            }
+        }
+    }
+}

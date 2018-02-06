@@ -6,11 +6,13 @@ import { MapComponent } from './map/map';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { UtilProvider } from '../providers/util/util';
 import { MarkerDetailComponent } from './marker-detail/marker-detail';
+import { FbButtonComponent } from './fb-button/fb-button';
 
 @NgModule({
 	declarations: [
         MapComponent,
-        MarkerDetailComponent
+        MarkerDetailComponent,
+        FbButtonComponent
     ],
     imports: [
         BrowserModule,
@@ -22,7 +24,8 @@ import { MarkerDetailComponent } from './marker-detail/marker-detail';
     ],
 	exports: [
         MapComponent,
-        MarkerDetailComponent
+        MarkerDetailComponent,
+        FbButtonComponent
     ]
 })
 export class ComponentsModule {}
