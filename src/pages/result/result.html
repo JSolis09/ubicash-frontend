@@ -6,7 +6,7 @@
         <ion-title class="title">Resultado</ion-title>
         <ion-item class="switchView">
             <ion-label> {{ !typeView ? 'Mapa': 'Lista' }}</ion-label>
-            <ion-toggle color="primary" checked="false" [(ngModel)]="typeView"></ion-toggle>
+            <ion-toggle color="primary" checked="true" [(ngModel)]="typeView"></ion-toggle>
         </ion-item>
     </ion-navbar>
 </ion-header>
@@ -21,10 +21,10 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <div class="section-map" *ngSwitchCase="false">
+    <div class="section-map" *ngSwitchCase="true">
         <map [results]="bankDetails"></map>
     </div>
-    <div class="section-list" *ngSwitchCase="true">
+    <div class="section-list" *ngSwitchCase="false">
         <ion-list class="list">
             <ion-item class="item" *ngFor="let bankDetail of bankDetailList">
                 <div class="description">

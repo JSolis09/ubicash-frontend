@@ -21,7 +21,7 @@ export class ResultPage {
     public bankDetails: BankDetail[];
     public bankDetailList: BankDetail[];
     public bankDetail: BankDetail;
-    public typeView: boolean = false;
+    public typeView: boolean = true;
     private limit: number = 10;
     private skip: number = 0;
 
