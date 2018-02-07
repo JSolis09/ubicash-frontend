@@ -17,6 +17,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { BankServiceProvider } from '../providers/bank/bank-service';
 import { UtilProvider } from '../providers/util/util';
 import { Geolocation } from '@ionic-native/geolocation';
+import { LogServiceProvider } from '../providers/log/log-service';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { Geolocation } from '@ionic-native/geolocation';
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         CustomerServiceProvider,
         BankServiceProvider,
-        UtilProvider
+        UtilProvider,
+        LogServiceProvider
     ]
 })
 export class AppModule {}

@@ -3,8 +3,11 @@ import { AlertController, IonicPage, NavParams, LoadingController } from 'ionic-
 import { Observable } from 'rxjs/Observable';
 
 import { Coordinates } from '@ionic-native/geolocation';
+import { Customer } from '../../providers/customer/customer';
+import { CustomerServiceProvider } from '../../providers/customer/customer-service';
 import { Bank, BankDetail } from '../../providers/bank/bank';
 import { BankServiceProvider } from '../../providers/bank/bank-service';
+import { LogServiceProvider } from '../../providers/log/log-service';
 import { UtilProvider } from '../../providers/util/util';
 
 @IonicPage()
@@ -13,23 +16,27 @@ import { UtilProvider } from '../../providers/util/util';
     templateUrl: 'result.html',
 })
 export class ResultPage {
-    private myLocation: Coordinates;
     private bankList: Bank[];
-    public bankId: string;
-    public bank: Bank;
-    public banks: Observable<Bank[]>;
-    public bankDetails: BankDetail[];
-    public bankDetailList: BankDetail[];
-    public bankDetail: BankDetail;
-    public typeView: boolean = true;
     private limit: number = 10;
+    private myLocation: Coordinates;
     private skip: number = 0;
+    public bank: Bank;
+    public bankDetail: BankDetail;
+    public bankDetailList: BankDetail[];
+    public bankDetails: BankDetail[];
+    public bankId: string;
+    public banks: Observable<Bank[]>;
+    public customer: Customer;
+    public typeView: boolean = true;
 
     constructor(private alertCtrl: AlertController,
+                private customerService: CustomerServiceProvider,
                 private navParams: NavParams,
                 private loadingCtrl: LoadingController,
+                private logService: LogServiceProvider,
                 private utilProvider: UtilProvider,
                 private bankService: BankServiceProvider) {
+        this.customer = this.customerService.getCustomer();
         this.bankDetails = [];
         this.bankDetailList = [];
         this.banks = this.bankService.getAll();
@@ -106,6 +113,12 @@ export class ResultPage {
 
     public changeBank(): void {
         this.bank = this.bankService.getBankById(this.bankList, this.bankId);
+        this.logService
+            .save({
+                bank_name: this.bank.name,
+                location: `${ this.myLocation.latitude },${ this.myLocation.longitude }`,
+                user_email: this.customer.email
+            });
         this.getBankDetails(this.bankId);
     }
 
