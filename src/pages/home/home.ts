@@ -43,8 +43,7 @@ export class HomePage {
         this.logService
             .save({
                 bank_name: bank.name,
-                location: `${ this.myLocation.latitude },${ this.myLocation.longitude }`,
-                user_email: this.customer.email
+                location: this.myLocation
             });
         this.navCtrl
             .push(ResultPage, { bank: bank });

@@ -116,8 +116,7 @@ export class ResultPage {
         this.logService
             .save({
                 bank_name: this.bank.name,
-                location: `${ this.myLocation.latitude },${ this.myLocation.longitude }`,
-                user_email: this.customer.email
+                location: this.myLocation
             });
         this.getBankDetails(this.bankId);
     }
