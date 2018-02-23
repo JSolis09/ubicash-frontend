@@ -13,6 +13,7 @@ import {
 import { Coordinates } from '@ionic-native/geolocation';
 import { BankDetail } from '../../providers/bank/bank';
 import { UtilProvider } from '../../providers/util/util';
+import { LogServiceProvider } from '../../providers/log/log-service';
 
 @Component({
     selector: 'map',
@@ -23,6 +24,7 @@ export class MapComponent implements OnInit, OnChanges {
     private markers: Marker[];
     private userMarker: Marker;
     private isReady: boolean;
+    private myLocation: Coordinates;
     public bankDetail: BankDetail;
 
     @Input() animation: boolean;
@@ -31,6 +33,7 @@ export class MapComponent implements OnInit, OnChanges {
 
     constructor(private googleMaps: GoogleMaps,
                 private zone: NgZone,
+                private logService: LogServiceProvider,
                 private utilProvider: UtilProvider) {
             this.isReady = false;
             this.markers = [];
@@ -63,6 +66,7 @@ export class MapComponent implements OnInit, OnChanges {
                 this.utilProvider
                     .getLocation()
                     .then((coords: Coordinates) => {
+                        this.myLocation = coords
                         this.moveCamera(coords)
                             .then((cameraSettings) => {
                                 this.map
@@ -119,6 +123,12 @@ export class MapComponent implements OnInit, OnChanges {
                                 this.zone
                                     .run(() => {
                                         this.bankDetail = Object.assign<any, BankDetail>({}, bankDetail);
+                                        this.logService
+                                            .save({
+                                                bank_name: this.bankDetail.bank.name,
+                                                branch: this.bankDetail,
+                                                location: this.myLocation
+                                            });
                                     });
                             });
                     });

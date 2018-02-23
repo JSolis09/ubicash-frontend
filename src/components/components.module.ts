@@ -7,6 +7,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 import { UtilProvider } from '../providers/util/util';
 import { MarkerDetailComponent } from './marker-detail/marker-detail';
 import { FbButtonComponent } from './fb-button/fb-button';
+import { LogServiceProvider } from '../providers/log/log-service';
 
 @NgModule({
 	declarations: [
@@ -20,7 +21,8 @@ import { FbButtonComponent } from './fb-button/fb-button';
     ],
     providers: [
         UtilProvider,
-        GoogleMaps
+        GoogleMaps,
+        LogServiceProvider
     ],
 	exports: [
         MapComponent,

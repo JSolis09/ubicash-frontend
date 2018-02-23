@@ -56,7 +56,7 @@ export class FbButtonComponent {
                                 this.customerService
                                     .setCustomerToken(response);
                                 this.customerService
-                                    .setCustomer({ id: response.userId } as Customer);
+                                    .setCustomer({ id: response.userId, email: data.email } as Customer);
                                 this.goHome();
                             }, (errorResponse) => {
                                 loading.dismiss();

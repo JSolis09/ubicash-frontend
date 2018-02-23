@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Customer, FacebookCustomer, PasswordReset } from './customer';
 import { CustomerToken } from './access-token';
-import { ApiServiceProvider } from '../../providers/api-service/api-service';
+import { ApiServiceProvider } from '../api-service/api-service';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()

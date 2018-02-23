@@ -63,8 +63,8 @@
       },
       "cordova-sqlite-storage": {},
       "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyBt4aYm_p4pHLI0RVVjR13plwkw5aguiJo",
-        "API_KEY_FOR_IOS": "AIzaSyBt4aYm_p4pHLI0RVVjR13plwkw5aguiJo"
+        "API_KEY_FOR_ANDROID": "AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY",
+        "API_KEY_FOR_IOS": "AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY"
       },
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "Para ubicarte"
