@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, MenuController } from 'ionic-angular';
 
 import { Customer } from '../../providers/customer/customer';
 import { CustomerToken } from '../../providers/customer/access-token';
@@ -21,12 +21,10 @@ export class LoginPage {
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
                 private loadingCtrl: LoadingController,
+                private menuCtrl: MenuController,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
-    }
-
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad LoginPage');
+        this.menuCtrl.swipeEnable(false);
     }
 
     goHome(): void {

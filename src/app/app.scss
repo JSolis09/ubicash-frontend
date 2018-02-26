@@ -28,12 +28,38 @@ ion-content {
         // background-size: 100%;
         background-color: $bg-app;
     }
+
 }
 
 .logo-app {
     display: block;
     margin: auto;
     height: 8em;
+}
+
+ion-menu {
+    ion-header {
+        ion-toolbar {
+            .toolbar-background {
+                background-color: $bg-app;
+            }
+        }
+    }
+    ion-content {
+        ion-list {
+            .item {
+                background-color: $bg-app;
+                button {
+                    &.item-button {
+                        font-size: 1.5rem;
+                    }
+                    .button-inner {
+                        justify-content: flex-start;
+                    }
+                }
+            }
+        }
+    }
 }
 
 page-register-user, page-home, page-result, page-forgot-password  {
