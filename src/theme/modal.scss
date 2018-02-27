@@ -44,4 +44,30 @@ ion-alert {
             }
         }
     }
+
+    &.select-alert {
+        &.single-select-alert {
+            .alert-wrapper {
+                .alert-head {
+                }
+                .alert-button-group {
+                    display: flex;
+                    button {
+                        &.alert-button {
+                            flex: 1;
+                            border-radius: 8px;
+                            color: $white;
+                            background-color: $green-light-three;
+                            .button-inner {
+                                justify-content: center;
+                            }
+                            &:first-child {
+                                background-color: $btn-light;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
