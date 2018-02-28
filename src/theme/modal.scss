@@ -16,6 +16,7 @@ ion-alert {
             .alert-button-group {
                 padding: 5px;
                 .alert-button {
+                    display: flex;
                     &.one-button {
                         border-radius: 8px;
                         width: 100%;
@@ -23,6 +24,46 @@ ion-alert {
                         background-color: $green-light-three;
                         .button-inner {
                             justify-content: center;
+                        }
+                    }
+                    &.two-button {
+                        display: inline-flex;
+                        flex: 1;
+                        border-radius: 8px;
+                        width: 50%;
+                        color: $white;
+                        background-color: $green-light-three;
+                        .button-inner {
+                            justify-content: center;
+                        }
+                        &.secondary {
+                            background-color: $btn-light;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.select-alert {
+        &.single-select-alert {
+            .alert-wrapper {
+                .alert-head {
+                }
+                .alert-button-group {
+                    display: flex;
+                    button {
+                        &.alert-button {
+                            flex: 1;
+                            border-radius: 8px;
+                            color: $white;
+                            background-color: $green-light-three;
+                            .button-inner {
+                                justify-content: center;
+                            }
+                            &:first-child {
+                                background-color: $btn-light;
+                            }
                         }
                     }
                 }
