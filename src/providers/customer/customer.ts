@@ -5,6 +5,8 @@ export class Customer {
     public email: string = '';
     public password: string = '';
     public username?: string;
+    public name?: string;
+    public imageUrl?: string;
 }
 
 export class FacebookCustomer {

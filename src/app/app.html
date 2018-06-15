@@ -1,7 +1,13 @@
-<ion-menu [content]="content">
+<ion-menu class="uc-menu" [content]="content">
     <ion-header>
         <ion-toolbar>
-            <ion-title></ion-title>
+            <ion-title>
+                <div class="user-info">
+                    <img class="img" [src]="customer?.imageUrl" />
+                    <span>{{ customer?.username || getFirstName(customer?.name) }}</span>
+                    <span>{{ customer?.email }}</span>
+                </div>
+            </ion-title>
         </ion-toolbar>
     </ion-header>
     <ion-content>

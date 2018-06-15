@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Headers } from '@angular/http';
+import { Headers, URLSearchParams } from '@angular/http';
 
 import { Customer, FacebookCustomer, PasswordReset } from './customer';
 import { CustomerToken } from './access-token';
 import { ApiServiceProvider } from '../api-service/api-service';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class CustomerServiceProvider {
     private customer: Customer;
     private customerToken: CustomerToken;
+    public customerSubject: Subject<Customer> = new Subject<Customer>();
 
     constructor(private apiService: ApiServiceProvider) { }
 
@@ -24,8 +26,16 @@ export class CustomerServiceProvider {
         return this.customer;
     }
 
+    public getCustomerById(userId: string, accessToken: string): Observable<Customer> {
+        const params = new URLSearchParams();
+        params.set('access_token', accessToken);
+        return this.apiService
+            .get(`Customers/${ userId }`, { search: params });
+    }
+
     public setCustomer(customer: Customer): void {
         this.customer = Object.assign(this.customer || { }, customer);
+        this.customerSubject.next(this.customer);
     }
 
     public getCustomerToken(): CustomerToken {

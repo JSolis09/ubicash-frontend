@@ -39,7 +39,7 @@ export class ApiServiceProvider {
     }
 
     public get(api: string, options?: any): Observable<any> {
-        const host: string = `${this.host}${api}`;
+        const host: string = `${this.host}/api/${api}`;
         options = options || {};
         return this.http
             .get(host, options)

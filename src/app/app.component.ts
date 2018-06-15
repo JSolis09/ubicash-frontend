@@ -5,13 +5,18 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { LoginPage } from '../pages/login/login';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
+import { Customer } from '../providers/customer/customer';
+
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
-    rootPage:any = LoginPage;
+    rootPage: any = LoginPage;
+    customer: Customer  = new Customer();
+    customerSubscription: Subscription;
 
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
@@ -24,6 +29,10 @@ export class MyApp {
                 this.statusBar.styleDefault();
                 this.splashScreen.hide();
             });
+            this.customerSubscription = this.customerService
+                .customerSubject.subscribe((customer) => {
+                    this.customer = customer;
+                });
         }
 
         public showAlert(): void {
@@ -55,5 +64,13 @@ export class MyApp {
                 .then(() => {
                     this.nav.setRoot(LoginPage);
                 });
+        }
+
+        public getFirstName(name: string): string {
+            if(name){
+                const nameArr = name.split(' ');
+                return `${ nameArr[0] } ${nameArr[1]}`;
+            }
+            return '';
         }
     }

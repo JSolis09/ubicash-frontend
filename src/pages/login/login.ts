@@ -47,12 +47,36 @@ export class LoginPage {
         this.customerService
             .login(this.customer)
             .subscribe((response: CustomerToken) => {
-                loading.dismiss();
                 this.customerService
                     .setCustomerToken(response);
                 this.customerService
-                    .setCustomer({ id: response.userId, email: this.customer.email } as Customer);
-                this.goHome();
+                    .getCustomerById(response.userId, response.id)
+                    .subscribe((customer: Customer) => {
+                        loading.dismiss();
+                        this.customerService
+                            .setCustomer({
+                                id: customer.id,
+                                email: customer.email,
+                                username: customer.username,
+                                imageUrl: 'assets/imgs/user-avatar.png'
+                            } as Customer);
+                        this.goHome();
+                    }, (error) => {
+                        console.log(error);
+                        loading.dismiss();
+                        const alert = this.alertCtrl.create({
+                            title: 'Error',
+                            message: 'Ocurrió un error al iniciar sesión, Intentelo más tarde',
+                            buttons: [
+                                {
+                                    text: 'cerrar',
+                                    role: 'cancel',
+                                    cssClass: 'one-button'
+                                }
+                            ]
+                        });
+                        alert.present();
+                    });
             }, (response) => {
                 loading.dismiss();
                 const error = response.error;

@@ -40,8 +40,28 @@ ion-content {
 ion-menu {
     ion-header {
         ion-toolbar {
+            min-height: 94px;
             .toolbar-background {
                 background-color: $bg-app;
+            }
+            ion-title {
+                .user-info {
+                    color: $white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: .2em 0;
+                    .img {
+                        width: 2em;
+                        height: 2em;
+                        -webkit-border-radius: 50%;
+                        border-radius: 50%;
+                        margin: 0 .5em 0.2em;
+                    }
+                    span {
+                        font-size: .8em;
+                    }
+                }
             }
         }
     }
@@ -142,8 +162,10 @@ page-home, page-result {
                 width: 100%;
                 max-width: 100%;
                 border: none;
-                .select-icon {
-                    display: none;
+                &.no-icon {
+                    .select-icon {
+                        display: none;
+                    }
                 }
             }
         }

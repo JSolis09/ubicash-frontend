@@ -41,7 +41,7 @@ export class FbButtonComponent {
                 });
                 loading.present();
                 this.fb
-                    .api('me?fields=id,email,name', [])
+                    .api('me?fields=id,email,name,picture', [])
                     .then((profile) => {
                         const data: FacebookCustomer = {
                             email: profile['email'],
@@ -56,7 +56,12 @@ export class FbButtonComponent {
                                 this.customerService
                                     .setCustomerToken(response);
                                 this.customerService
-                                    .setCustomer({ id: response.userId, email: data.email } as Customer);
+                                    .setCustomer({
+                                        id: response.userId,
+                                        email: data.email,
+                                        name: profile['name'],
+                                        imageUrl: profile['picture'].data.url
+                                    } as Customer);
                                 this.goHome();
                             }, (errorResponse) => {
                                 loading.dismiss();

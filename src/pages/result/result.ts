@@ -61,7 +61,7 @@ export class ResultPage {
         loading.present();
         this.resetBankDetailList();
         this.bankService
-            .getBankDetails(bankId)
+            .getBankDetails(bankId, this.myLocation)
             .subscribe((bankDetails: BankDetail[]) => {
                 const bank = Object.assign({}, this.bank);
                 this.bankDetails = bankDetails || [];
@@ -89,15 +89,6 @@ export class ResultPage {
     private mapBankList(bankDetails: BankDetail[], bank: Bank): void {
         bankDetails.forEach((bankDetail) => {
             bankDetail.bank = bank;
-            if (!!this.myLocation) {
-                bankDetail.distance = this.utilProvider.getDistanceBetween({
-                    lat: bankDetail.lat,
-                    lng: bankDetail.lng
-                }, {
-                    lat: this.myLocation.latitude,
-                    lng: this.myLocation.longitude
-                });
-            }
         });
     }
 
