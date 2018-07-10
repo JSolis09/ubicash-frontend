@@ -8,7 +8,8 @@ import {
     CameraPosition,
     ILatLng,
     Marker,
-    MarkerOptions
+    MarkerOptions,
+    MapType
 } from '@ionic-native/google-maps';
 import { Coordinates } from '@ionic-native/geolocation';
 import { BankDetail } from '../../providers/bank/bank';
@@ -53,7 +54,7 @@ export class MapComponent implements OnInit, OnChanges {
                 zoom: 18,
                 tilt:30
             },
-            mapType: GoogleMapsMapTypeId.ROADMAP
+            mapType: <MapType>GoogleMapsMapTypeId.ROADMAP
         };
         this.init(mapOptions);
     }

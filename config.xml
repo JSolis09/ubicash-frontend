@@ -12,7 +12,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
@@ -80,6 +80,7 @@
     <allow-navigation href="http://192.168.1.36:8100" />
     <allow-navigation href="http://10.36.70.51:8101" />
     <allow-navigation href="http://192.168.1.36:8101" />
+    <allow-navigation href="http://192.168.1.44:8100" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
@@ -90,15 +91,13 @@
         <variable name="APP_NAME" value="ubicashDev" />
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="^2.2.1" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.2.6">
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY" />
-        <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
-        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.1.0" />
-    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Para ubicarte" />
     </plugin>
-    <allow-navigation href="http://192.168.1.44:8100" />
     <engine name="android" spec="~6.3.0" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.3.6">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY" />
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.1.0" />
+    </plugin>
 </widget>
