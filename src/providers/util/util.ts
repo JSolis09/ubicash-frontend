@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
 import { Spherical, ILatLng } from '@ionic-native/google-maps';
-import { settings } from '../../environments/environment';
+
+import { AlertController, LoadingController } from 'ionic-angular';
 
 @Injectable()
 export class UtilProvider {
 
-    constructor(private geolocation: Geolocation) { }
+    constructor(private alertCtrl: AlertController,
+                private geolocation: Geolocation,
+                private loadingCtrl: LoadingController) { }
 
     public getDistanceBetween(from: ILatLng, to: ILatLng ): number {
         let distance: number;
@@ -32,25 +35,39 @@ export class UtilProvider {
         return d;
     }
 
-    public getLocation(): Promise<Coordinates> {
-        return this.geolocation
+    public getLocation(show?: boolean): Promise<Coordinates | any> {
+        const loading = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: 'Obteniendo ubicación...'
+        });
+        return new Promise((resolve, reject) => {
+            this.geolocation
             .getCurrentPosition()
             .then((resp) => {
-                return {
+                resolve({
                     latitude: resp.coords.latitude,
                     longitude: resp.coords.longitude
-                } as Coordinates
+                } as Coordinates);
             })
             .catch((error) => {
-                if (settings && settings.defaultLocation) {
-                    return {
-                        latitude: settings.defaultLocation.lat,
-                        longitude: settings.defaultLocation.lng
-                    } as Coordinates;
-                } else {
-                    return {} as Coordinates;
+                loading.dismiss();
+                if (show) {
+                    const alert = this.alertCtrl.create({
+                        title: 'Error',
+                        message: 'No se pudo obtener su ubicación',
+                        buttons: [
+                            {
+                                text: 'cerrar',
+                                role: 'cancel',
+                                cssClass: 'one-button'
+                            }
+                        ]
+                    });
+                    alert.present();
                 }
+                reject(error);
             });
+        });
     }
 
     private deg2rad(deg): number {

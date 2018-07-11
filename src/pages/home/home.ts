@@ -31,20 +31,21 @@ export class HomePage {
         this.banks = this.bankService
             .getAll()
             .map((banks) => this.bankList = banks.splice(0) );
-        this.utilProvider
-            .getLocation()
-            .then((coords) => {
-                this.myLocation = coords;
-            });
     }
 
     public changeBank(): void {
         const bank: Bank = this.bankService.getBankById(this.bankList, this.bank);
-        this.logService
-            .save({
-                bank_name: bank.name,
-                location: this.myLocation
-            });
+        this.utilProvider
+            .getLocation()
+            .then((coords) => {
+                this.myLocation = coords;
+                this.logService
+                    .save({
+                        bank_name: bank.name,
+                        location: this.myLocation
+                    });
+            })
+            .catch((error) => { });
         this.navCtrl
             .push(ResultPage, { bank: bank });
     }

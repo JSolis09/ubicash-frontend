@@ -65,7 +65,7 @@ export class MapComponent implements OnInit, OnChanges {
             .one(GoogleMapsEvent.MAP_READY)
             .then(() => {
                 this.utilProvider
-                    .getLocation()
+                    .getLocation(true)
                     .then((coords: Coordinates) => {
                         this.myLocation = coords
                         this.moveCamera(coords)
@@ -88,7 +88,7 @@ export class MapComponent implements OnInit, OnChanges {
                                 this.addMarker();
                                 this.isReady = true;
                             });
-                    });
+                    }).catch((error) => { });
             });
     }
 

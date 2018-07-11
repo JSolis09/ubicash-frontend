@@ -50,7 +50,7 @@ export class ResultPage {
                     .then((coords) => {
                         this.myLocation = coords;
                         this.getBankDetails(this.bankId);
-                    });
+                    }, (error) => {});
             });
     }
 
@@ -104,12 +104,17 @@ export class ResultPage {
 
     public changeBank(): void {
         this.bank = this.bankService.getBankById(this.bankList, this.bankId);
-        this.logService
-            .save({
-                bank_name: this.bank.name,
-                location: this.myLocation
-            });
-        this.getBankDetails(this.bankId);
+        this.utilProvider
+            .getLocation(true)
+            .then((coords) => {
+                this.myLocation = coords;
+                this.logService
+                    .save({
+                        bank_name: this.bank.name,
+                        location: this.myLocation
+                    });
+                this.getBankDetails(this.bankId);
+            }, () => { });
     }
 
     public getMoreBankDetail(infiniteScroll: any): void {
