@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Coordinates } from '@ionic-native/geolocation';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { Customer } from '../../providers/customer/customer';
 import { Bank } from '../../providers/bank/bank';
@@ -21,6 +22,7 @@ export class HomePage {
     public bank: string;
     public banks: Observable<Bank[]>;
     public customer: Customer;
+    public locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
 
     constructor(private navCtrl: NavController,
                 private customerService: CustomerServiceProvider,
@@ -36,16 +38,16 @@ export class HomePage {
     public changeBank(): void {
         const bank: Bank = this.bankService.getBankById(this.bankList, this.bank);
         this.utilProvider
-            .getLocation()
-            .then((coords) => {
-                this.myLocation = coords;
-                this.logService
-                    .save({
-                        bank_name: bank.name,
-                        location: this.myLocation
-                    });
-            })
-            .catch((error) => { });
+                .getLocation()
+                .then((coords) => {
+                    this.myLocation = coords;
+                    this.logService
+                        .save({
+                            bank_name: bank.name,
+                            location: this.myLocation
+                        });
+                    })
+                .catch((error) => { });
         this.navCtrl
             .push(ResultPage, { bank: bank });
     }

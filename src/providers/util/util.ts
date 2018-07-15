@@ -6,7 +6,6 @@ import { AlertController, LoadingController } from 'ionic-angular';
 
 @Injectable()
 export class UtilProvider {
-
     constructor(private alertCtrl: AlertController,
                 private geolocation: Geolocation,
                 private loadingCtrl: LoadingController) { }
@@ -36,22 +35,30 @@ export class UtilProvider {
     }
 
     public getLocation(show?: boolean): Promise<Coordinates | any> {
-        const loading = this.loadingCtrl.create({
-            spinner: 'hide',
-            content: 'Obteniendo ubicación...'
-        });
+        let loading;
+        if (show) {
+            loading = this.loadingCtrl.create({
+                content: 'Obteniendo ubicación...'
+            });
+            loading.present();
+        }
         return new Promise((resolve, reject) => {
             this.geolocation
-            .getCurrentPosition()
+            .getCurrentPosition({
+                timeout: 30000
+            })
             .then((resp) => {
+                if (show) {
+                    loading.dismiss();
+                }
                 resolve({
                     latitude: resp.coords.latitude,
                     longitude: resp.coords.longitude
                 } as Coordinates);
             })
             .catch((error) => {
-                loading.dismiss();
                 if (show) {
+                    loading.dismiss();
                     const alert = this.alertCtrl.create({
                         title: 'Error',
                         message: 'No se pudo obtener su ubicación',

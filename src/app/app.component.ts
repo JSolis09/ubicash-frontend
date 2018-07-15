@@ -2,10 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { AlertController, Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { HomePage } from '../pages/home/home';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
-import { Customer } from '../providers/customer/customer';
+import { Customer, CUSTOMER_NAME, CUSTOMER_TOKEN_NAME } from '../providers/customer/customer';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -22,12 +24,28 @@ export class MyApp {
                 private customerService: CustomerServiceProvider,
                 private platform: Platform,
                 private statusBar: StatusBar,
+                private storage: Storage,
                 private splashScreen: SplashScreen) {
             this.platform.ready().then(() => {
                 // Okay, so the platform is ready and our plugins are available.
                 // Here you can do any higher level native things you might need.
                 this.statusBar.styleDefault();
-                this.splashScreen.hide();
+                const getCustomer = this.storage.get(CUSTOMER_NAME);
+                const getCustomerToken = this.storage.get(CUSTOMER_TOKEN_NAME);
+                Promise.all([getCustomer, getCustomerToken])
+                    .then((responses) => {
+                        this.splashScreen.hide();
+                        const customer = responses[0] || {};
+                        const customerToken = responses[1] || {};
+                        if (customer.id && customerToken.id) {
+                            this.customerService
+                                .setCustomer(customer);
+                            this.customerService
+                                .setCustomerToken(customerToken);
+                            this.nav
+                                .setRoot(HomePage);
+                        };
+                    });
             });
             this.customerSubscription = this.customerService
                 .customerSubject.subscribe((customer) => {

@@ -11,5 +11,11 @@ button.btn {
         padding: 10px 10px 10px 10px;
         text-decoration:none;
         color: $dark;
+        &:disabled {
+            background-color: $white;
+            opacity: 0.8;
+            color: darkgray;
+            border:1px solid lightgray;
+        }
     }
 }
