@@ -6,6 +6,7 @@ import { CustomerServiceProvider } from '../../providers/customer/customer-servi
 import { Customer } from '../../providers/customer/customer';
 
 import { LoginPage } from '../login/login';
+import { TranslateProvider } from '../../providers/util/translate';
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ export class RegisterUserPage implements OnInit {
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
                 private loadingCtrl: LoadingController,
+                private translateProvider: TranslateProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
         }
@@ -33,6 +35,24 @@ export class RegisterUserPage implements OnInit {
 
         ionViewDidLoad() {
             console.log('ionViewDidLoad RegisterUserPage');
+        }
+
+        private generateErrorMessage(error: any): string {
+            const details = error.details || {};
+            const codes = details.codes || {};
+            const emailError = codes.email;
+            const usernameError = codes.username;
+            const messages = details.messages;
+            if (usernameError) {
+                const usernameMessage = messages.username.find((item) => true);
+                return this.translateProvider.translate(usernameMessage);
+            }
+            if (emailError) {
+                const emailMessage = messages.email.find((item) => true);
+                return this.translateProvider.translate(emailMessage);
+            }
+
+            return 'Ocurrió un error a la hora de registrar';
         }
 
         public unmatchPassword(user): any {
@@ -78,7 +98,7 @@ export class RegisterUserPage implements OnInit {
                         const error = responseError.error || {};
                         const alert = this.alertCtrl.create({
                             title: 'Error',
-                            message: error.message || 'Ocurrió un error a la hora de registrar',
+                            message: this.generateErrorMessage(error),
                             buttons: [
                                 {
                                     text: 'cerrar',

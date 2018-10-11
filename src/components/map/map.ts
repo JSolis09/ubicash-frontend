@@ -16,7 +16,6 @@ import { BankDetail } from '../../providers/bank/bank';
 import { UtilProvider } from '../../providers/util/util';
 import { LogServiceProvider } from '../../providers/log/log-service';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'map',
@@ -105,9 +104,6 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                 this.updateLocationSubscription = this.map
                     .on(GoogleMapsEvent.MY_LOCATION_BUTTON_CLICK)
                     .subscribe((coords) => {
-                        const locationOptions = {
-                            enableHighAccuracy: true
-                        };
                         this.map
                             .getMyLocation()
                             .then((response) => {
@@ -144,10 +140,6 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
         };
         const camera: Promise<any> = !!this.animation ? this.map.animateCamera(cameraSettings) : this.map.moveCamera(cameraSettings);
         return camera.then((response) => cameraSettings);
-    }
-
-    private updateLocation(): void {
-        
     }
 
     private addMarker(): void {

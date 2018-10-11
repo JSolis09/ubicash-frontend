@@ -1,3 +1,12 @@
 page-register-user {
-
+    .register-user {
+        .form-register {
+            .input-fields {
+                .error {
+                    margin-bottom: 16px;
+                    color: red;
+                }
+            }
+        }
+    }
 }
