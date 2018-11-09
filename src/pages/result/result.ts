@@ -110,6 +110,8 @@ export class ResultPage {
             .getLocation(true)
             .then((coords) => {
                 this.myLocation = coords;
+                this.utilProvider
+                    .updateLocation(this.myLocation);
                 this.logService
                     .save({
                         bank_name: this.bank.name,

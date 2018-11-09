@@ -4,6 +4,7 @@ import { Coordinates } from '@ionic-native/geolocation';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { LoginPage } from '../login/login';
 import { Customer } from '../../providers/customer/customer';
 import { Bank } from '../../providers/bank/bank';
 import { CustomerServiceProvider } from '../../providers/customer/customer-service';
@@ -32,7 +33,13 @@ export class HomePage {
         this.customer = this.customerService.getCustomer();
         this.banks = this.bankService
             .getAll()
-            .map((banks) => this.bankList = banks.splice(0) );
+            .map((banks) => this.bankList = banks.splice(0))
+            .catch((error) => {
+                this.customerService
+                    .logout();
+                this.navCtrl.setRoot(LoginPage);
+                return [];
+            });
     }
 
     public changeBank(): void {

@@ -29,6 +29,7 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
     private myLocation: Coordinates;
     public bankDetail: BankDetail;
     private updateLocationSubscription: Subscription;
+    private observeLocationSubscription: Subscription;
 
     @Input() animation: boolean;
     @Input() results: BankDetail[];
@@ -52,11 +53,20 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit(): void {
         this.init();
+        this.observeLocationSubscription = this.utilProvider
+            .observeLocation()
+            .subscribe((coords: Coordinates) => {
+                this.addOrUpdateOwnLocation(coords);
+            });
     }
 
     ngOnDestroy(): void {
         if (this.updateLocationSubscription) {
             this.updateLocationSubscription.unsubscribe();
+        };
+
+        if (this.observeLocationSubscription) {
+            this.observeLocationSubscription.unsubscribe();
         };
     }
 

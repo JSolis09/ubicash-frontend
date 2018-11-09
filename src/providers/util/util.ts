@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
 import { Spherical, ILatLng } from '@ionic-native/google-maps';
+import { Subject } from 'rxjs/Subject';
 
 import { AlertController, LoadingController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UtilProvider {
+    private locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
+
     constructor(private alertCtrl: AlertController,
                 private geolocation: Geolocation,
                 private loadingCtrl: LoadingController) { }
@@ -75,6 +79,14 @@ export class UtilProvider {
                 reject(error);
             });
         });
+    }
+
+    public observeLocation(): Observable<Coordinates> {
+        return this.locationSubject;
+    }
+
+    public updateLocation(coords: Coordinates): void {
+        this.locationSubject.next({...coords});
     }
 
     private deg2rad(deg): number {
