@@ -1,4 +1,5 @@
 export const CUSTOMER_NAME = 'customer';
+export const CUSTOMER_TOKEN_NAME = 'customerToken';
 
 export class Customer {
     public id?: string;

@@ -5,6 +5,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { CustomerServiceProvider } from '../../providers/customer/customer-service';
 import { LoginPage } from '../login/login';
 import { PasswordReset } from '../../providers/customer/customer';
+import { TranslateProvider } from '../../providers/util/translate';
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ export class ForgotPasswordPage implements OnInit {
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
                 private loadingCtrl: LoadingController,
+                private translateProvider: TranslateProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
     }
@@ -48,12 +50,13 @@ export class ForgotPasswordPage implements OnInit {
                     .then(() => {
                         this.isSent = true;
                     });
-            }, () => {
+            }, (response) => {
+                const error = response.error || {};
                 loading.dismiss();
                 this.isSent = false;
                 const alert = this.alertCtrl.create({
                     title: 'Error',
-                    message: 'Ocurrió un error, inténtelo nuevamente.',
+                    message: this.translateProvider.translate(error.code),
                     buttons: [
                         {
                             text: 'cerrar',

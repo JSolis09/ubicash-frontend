@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavParams, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { Coordinates } from '@ionic-native/geolocation';
 import { Customer } from '../../providers/customer/customer';
@@ -28,6 +29,7 @@ export class ResultPage {
     public banks: Observable<Bank[]>;
     public customer: Customer;
     public typeView: boolean = true;
+    public locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
 
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,

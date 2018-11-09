@@ -94,10 +94,11 @@
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Para ubicarte" />
     </plugin>
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-googlemaps" spec="^2.3.6">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBIKuWGRoLfe1sLuMG72_6QwVlmGBMJoNY" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.1.0" />
     </plugin>
+    <allow-navigation href="http://192.168.1.32:8100" />
+    <engine name="android" spec="6.3.0" />
 </widget>

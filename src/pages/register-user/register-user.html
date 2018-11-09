@@ -2,12 +2,12 @@
 	<ion-navbar>
 	</ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content class="register-user" padding>
 	<div class="section-logo">
 		<img class="logo-app" src="assets/imgs/logo.png" />
 		<header>CREAR UNA NUEVA CUENTA</header>
 	</div>
-    <form novalidate [formGroup]="user">
+    <form class="form-register" novalidate [formGroup]="user">
         <ion-list class="input-fields">
             <ion-item class="input-field label-left">
                 <ion-label class="label">
@@ -15,6 +15,9 @@
                 </ion-label>
                 <ion-input type="text" formControlName="username" placeholder="Usuario"></ion-input>
             </ion-item>
+            <div class="error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
+                Ingrese como mínimo 3 caracteres alfanuméricos.
+            </div>
             <ion-item class="input-field label-left">
                 <ion-label class="label">
                     <ion-icon class="icon icon-lock" ios="ios-lock" md="md-lock"></ion-icon>

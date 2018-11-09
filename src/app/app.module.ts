@@ -16,6 +16,7 @@ import { CustomerServiceProvider } from '../providers/customer/customer-service'
 import { IonicStorageModule } from '@ionic/storage';
 import { BankServiceProvider } from '../providers/bank/bank-service';
 import { UtilProvider } from '../providers/util/util';
+import { TranslateProvider } from '../providers/util/translate';
 import { Geolocation } from '@ionic-native/geolocation';
 import { LogServiceProvider } from '../providers/log/log-service';
 
@@ -48,6 +49,7 @@ import { LogServiceProvider } from '../providers/log/log-service';
         CustomerServiceProvider,
         BankServiceProvider,
         UtilProvider,
+        TranslateProvider,
         LogServiceProvider
     ]
 })
