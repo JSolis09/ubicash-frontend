@@ -16,6 +16,7 @@ import { BankDetail } from '../../providers/bank/bank';
 import { UtilProvider } from '../../providers/util/util';
 import { LogServiceProvider } from '../../providers/log/log-service';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'map',
@@ -33,6 +34,7 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() animation: boolean;
     @Input() results: BankDetail[];
+    @Input() observeLocation: Subject<Coordinates>;
     @ViewChild('map') mapElement: ElementRef;
 
     constructor(private googleMaps: GoogleMaps,
@@ -53,11 +55,12 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit(): void {
         this.init();
-        this.observeLocationSubscription = this.utilProvider
-            .observeLocation()
-            .subscribe((coords: Coordinates) => {
-                this.addOrUpdateOwnLocation(coords);
-            });
+        if (this.observeLocation) {
+            this.observeLocationSubscription = this.observeLocation
+                .subscribe((coords: Coordinates) => {
+                    this.addOrUpdateOwnLocation(coords);
+                });
+        }
     }
 
     ngOnDestroy(): void {

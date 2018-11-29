@@ -28,9 +28,10 @@ export class ResultPage {
     public bankId: string;
     public banks: Observable<Bank[]>;
     public customer: Customer;
-    public typeView: boolean = true;
+    public disabledSearch: boolean;
     public locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
-
+    public typeView: boolean = true;
+    
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
                 private navParams: NavParams,
@@ -50,6 +51,8 @@ export class ResultPage {
                 this.utilProvider
                     .getLocation()
                     .then((coords) => {
+                        this.utilProvider
+                            .setCurrentLocation(coords);
                         this.myLocation = coords;
                         this.getBankDetails(this.bankId);
                     }, (error) => {});
@@ -105,20 +108,27 @@ export class ResultPage {
     }
 
     public changeBank(): void {
+        this.disabledSearch = true;
         this.bank = this.bankService.getBankById(this.bankList, this.bankId);
         this.utilProvider
-            .getLocation(true)
+            .getLocation()
             .then((coords) => {
+                this.disabledSearch = false;
                 this.myLocation = coords;
-                this.utilProvider
-                    .updateLocation(this.myLocation);
+                const oldLocation = this.utilProvider.getCurrentLocation();
+                if (this.utilProvider.isDifferentLocation(oldLocation, coords)) {
+                    this.locationSubject
+                        .next(this.myLocation);
+                }
                 this.logService
                     .save({
                         bank_name: this.bank.name,
                         location: this.myLocation
                     });
                 this.getBankDetails(this.bankId);
-            }, () => { });
+            }, () => {
+                this.disabledSearch = false;
+            });
     }
 
     public getMoreBankDetail(infiniteScroll: any): void {

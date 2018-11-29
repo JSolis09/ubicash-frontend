@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Geolocation, Coordinates } from '@ionic-native/geolocation';
 import { Spherical, ILatLng } from '@ionic-native/google-maps';
-import { Subject } from 'rxjs/Subject';
 
 import { AlertController, LoadingController } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UtilProvider {
-    private locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
+    private currentLocation: Coordinates;
 
     constructor(private alertCtrl: AlertController,
                 private geolocation: Geolocation,
                 private loadingCtrl: LoadingController) { }
+    
+    public setCurrentLocation(coords: Coordinates): void {
+        this.currentLocation = Object.assign({}, coords);
+    };
+
+    public getCurrentLocation(): Coordinates {
+        return this.currentLocation;
+    };
 
     public getDistanceBetween(from: ILatLng, to: ILatLng ): number {
         let distance: number;
@@ -81,16 +87,15 @@ export class UtilProvider {
         });
     }
 
-    public observeLocation(): Observable<Coordinates> {
-        return this.locationSubject;
-    }
-
-    public updateLocation(coords: Coordinates): void {
-        this.locationSubject.next({...coords});
-    }
-
     private deg2rad(deg): number {
         return deg * (Math.PI/180)
     }
+
+    public isDifferentLocation(oldCoords: Coordinates, newCoords: Coordinates): boolean {
+        if (!oldCoords) {
+            return true;
+        }
+        return oldCoords.latitude !== newCoords.latitude || oldCoords.longitude !== newCoords.longitude;
+    };
 
 }
