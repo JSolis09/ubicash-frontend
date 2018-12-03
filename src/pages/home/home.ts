@@ -19,7 +19,7 @@ import { UtilProvider } from '../../providers/util/util';
 })
 export class HomePage {
     private bankList: Bank[];
-    private myLocation: Coordinates;
+    private locationRef: Coordinates;
     public bank: string;
     public banks: Observable<Bank[]>;
     public customer: Customer;
@@ -42,21 +42,31 @@ export class HomePage {
             });
     }
 
+    ionViewDidLoad() {
+        this.utilProvider
+            .getLocation()
+            .then((coords) => {
+                this.locationRef = Object.assign({}, coords);
+                this.utilProvider.setCurrentLocation(this.locationRef);
+            })
+            .catch((error) => { });
+    }
+
+    public onChangeUserPosition(locationRef: Coordinates): void {
+        this.locationRef = Object.assign({}, locationRef);
+        this.utilProvider.setCurrentLocation(this.locationRef);
+    }
+
     public changeBank(): void {
         const bank: Bank = this.bankService.getBankById(this.bankList, this.bank);
-        this.utilProvider
-                .getLocation()
-                .then((coords) => {
-                    this.myLocation = coords;
-                    this.logService
-                        .save({
-                            bank_name: bank.name,
-                            location: this.myLocation
-                        });
-                    })
-                .catch((error) => { });
+        this.logService
+            .save({
+                bank_name: bank.name,
+                location: this.locationRef
+            });
         this.navCtrl
-            .push(ResultPage, { bank: bank });
+            .push(ResultPage, {
+                bank: bank, locationRef: Object.assign({}, this.locationRef) });
     }
 
 }

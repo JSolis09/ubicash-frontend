@@ -19,7 +19,6 @@ import { UtilProvider } from '../../providers/util/util';
 export class ResultPage {
     private bankList: Bank[];
     private limit: number = 10;
-    private myLocation: Coordinates;
     private skip: number = 0;
     public bank: Bank;
     public bankDetail: BankDetail;
@@ -29,7 +28,10 @@ export class ResultPage {
     public banks: Observable<Bank[]>;
     public customer: Customer;
     public disabledSearch: boolean;
+    public isFirstTime: boolean;
     public locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
+    public locationRef: Coordinates;
+    public showMap: Boolean;
     public typeView: boolean = true;
     
     constructor(private alertCtrl: AlertController,
@@ -42,31 +44,37 @@ export class ResultPage {
         this.customer = this.customerService.getCustomer();
         this.bankDetails = [];
         this.bankDetailList = [];
+        this.locationRef = Object.assign({
+            latitude: '',
+            longitude: ''
+        }, this.navParams.get('locationRef'));
+        this.showMap = true;
+    }
+
+    ionViewDidEnter() {
         this.banks = this.bankService.getAll();
+        this.bank = this.navParams.get('bank');
+        this.disabledSearch = true;
+        this.isFirstTime = false;
         this.banks
             .subscribe((banks) => {
-                this.bankList = banks;
-                this.bank = this.navParams.get('bank');
+                this.disabledSearch = false;
+                this.bankList = [...banks];
                 this.bankId = this.bank.id;
-                this.utilProvider
-                    .getLocation()
-                    .then((coords) => {
-                        this.utilProvider
-                            .setCurrentLocation(coords);
-                        this.myLocation = coords;
-                        this.getBankDetails(this.bankId);
-                    }, (error) => {});
+                this.getBankDetails(this.bankId, this.locationRef);
+            }, () => {
+                this.disabledSearch = false;
             });
     }
 
-    public getBankDetails(bankId: string): void {
+    public getBankDetails(bankId: string, locationRef: Coordinates): void {
         const loading = this.loadingCtrl.create({
             content: 'Buscando ...'
         });
         loading.present();
         this.resetBankDetailList();
         this.bankService
-            .getBankDetails(bankId, this.myLocation)
+            .getBankDetails(bankId, locationRef)
             .subscribe((bankDetails: BankDetail[]) => {
                 const bank = Object.assign({}, this.bank);
                 this.bankDetails = bankDetails || [];
@@ -107,28 +115,33 @@ export class ResultPage {
         this.skip = this.limit;
     }
 
+    private recalculateDistances(): void {
+        this.bankDetails = this.bankDetails
+            .map((bankDetail: BankDetail) => {
+                return Object.assign(bankDetail, {
+                    distance: this.utilProvider.getDistanceBetween({
+                        lat: bankDetail.lat,
+                        lng: bankDetail.lng
+                    }, {
+                        lat: this.locationRef.latitude,
+                        lng: this.locationRef.longitude
+                    })
+                });
+            });
+    }
+
     public changeBank(): void {
-        this.disabledSearch = true;
         this.bank = this.bankService.getBankById(this.bankList, this.bankId);
+        this.getBankDetails(this.bankId, this.locationRef);
         this.utilProvider
             .getLocation()
             .then((coords) => {
-                this.disabledSearch = false;
-                this.myLocation = coords;
-                const oldLocation = this.utilProvider.getCurrentLocation();
-                if (this.utilProvider.isDifferentLocation(oldLocation, coords)) {
-                    this.locationSubject
-                        .next(this.myLocation);
-                }
                 this.logService
                     .save({
                         bank_name: this.bank.name,
-                        location: this.myLocation
+                        location: coords
                     });
-                this.getBankDetails(this.bankId);
-            }, () => {
-                this.disabledSearch = false;
-            });
+            }, () => { });
     }
 
     public getMoreBankDetail(infiniteScroll: any): void {
@@ -141,6 +154,12 @@ export class ResultPage {
             this.skip += newBankDetailList.length;
             infiniteScroll.complete();
         }, 500);
+    }
+
+    public onChangeUserPosition(locationRef: Coordinates): void {
+        this.locationRef = Object.assign({}, locationRef);
+        this.utilProvider.setCurrentLocation(this.locationRef);
+        this.recalculateDistances();
     }
 
 }

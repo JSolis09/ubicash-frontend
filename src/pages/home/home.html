@@ -14,5 +14,9 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <map [animation]="true"></map>
+    <map
+        [animation]="true"
+        (onChangeUserPosition)="onChangeUserPosition($event)"
+        [observeLocation]="locationSubject">
+    </map>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, ElementRef, Input, OnChanges, NgZone } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ElementRef, Input, OnChanges, NgZone, Output, EventEmitter } from '@angular/core';
 import {
     GoogleMaps,
     GoogleMap,
@@ -6,6 +6,7 @@ import {
     GoogleMapOptions,
     GoogleMapsMapTypeId,
     CameraPosition,
+    Environment,
     ILatLng,
     Marker,
     MarkerOptions,
@@ -23,19 +24,22 @@ import { Subject } from 'rxjs/Subject';
     templateUrl: 'map.html'
 })
 export class MapComponent implements OnInit, OnDestroy, OnChanges {
-    private map: GoogleMap;
-    private markers: Marker[];
-    private userMarker: Marker;
-    private isReady: boolean;
-    private myLocation: Coordinates;
-    public bankDetail: BankDetail;
-    private updateLocationSubscription: Subscription;
-    private observeLocationSubscription: Subscription;
 
     @Input() animation: boolean;
-    @Input() results: BankDetail[];
+    @Input() defaultLocation: Coordinates;
     @Input() observeLocation: Subject<Coordinates>;
+    @Input() results: BankDetail[];
+    @Output() onChangeUserPosition: EventEmitter<Coordinates> = new EventEmitter<Coordinates>();
     @ViewChild('map') mapElement: ElementRef;
+    private isReady: boolean;
+    private locationRef: Coordinates;
+    private map: GoogleMap;
+    private markers: Marker[];
+    private observeLocationSubscription: Subscription;
+    private updateLocationSubscription: Subscription;
+    private userMarker: Marker;
+    private locationPromise: any = null;
+    public bankDetail: BankDetail;
 
     constructor(private googleMaps: GoogleMaps,
                 private zone: NgZone,
@@ -58,7 +62,10 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
         if (this.observeLocation) {
             this.observeLocationSubscription = this.observeLocation
                 .subscribe((coords: Coordinates) => {
-                    this.addOrUpdateOwnLocation(coords);
+                    if (this.utilProvider.isDifferentLocation(this.locationRef, coords)) {
+                        this.locationRef = Object.assign({}, coords);
+                        this.addOrUpdateOwnLocation(coords);
+                    }
                 });
         }
     }
@@ -67,7 +74,6 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
         if (this.updateLocationSubscription) {
             this.updateLocationSubscription.unsubscribe();
         };
-
         if (this.observeLocationSubscription) {
             this.observeLocationSubscription.unsubscribe();
         };
@@ -85,6 +91,7 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                         title: '¡Estás aquí!',
                         icon: 'assets/icon/user-marker.png',
                         animation: 'DROP',
+                        draggable: true,
                         position: {
                             lat: cameraSettings.target.lat,
                             lng: cameraSettings.target.lng
@@ -95,6 +102,15 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                         console.log('User marker added...', this.userMarker);
                         marker.on(GoogleMapsEvent.MARKER_CLICK)
                             .subscribe((response) => { });
+                        marker.on(GoogleMapsEvent.MARKER_DRAG_END)
+                            .subscribe(() => {
+                                const locationRef = marker.getPosition();
+                                this.locationRef = <Coordinates>{
+                                    latitude: locationRef.lat,
+                                    longitude: locationRef.lng
+                                };
+                                this.onChangeUserPosition.emit(this.locationRef);
+                            });
                     });
             });
     }
@@ -117,28 +133,40 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                 this.updateLocationSubscription = this.map
                     .on(GoogleMapsEvent.MY_LOCATION_BUTTON_CLICK)
                     .subscribe((coords) => {
-                        this.map
-                            .getMyLocation()
-                            .then((response) => {
-                                if (response.latLng) {
-                                    const currentCoords: Coordinates = {
-                                        latitude: response.latLng.lat,
-                                        longitude: response.latLng.lng
-                                    } as Coordinates;
-                                    this.addOrUpdateOwnLocation(currentCoords);         
-                                }
-                            });
+                        if (!this.locationPromise) {
+                            this.locationPromise = this.map
+                                .getMyLocation()
+                                .then((response) => {
+                                    if (response.latLng) {
+                                        const currentCoords: Coordinates = {
+                                            latitude: response.latLng.lat,
+                                            longitude: response.latLng.lng
+                                        } as Coordinates;
+                                        this.addOrUpdateOwnLocation(currentCoords);         
+                                    }
+                                    this.locationPromise = null;
+                                }, () => {
+                                    this.locationPromise = null;
+                                });
+                        }
                     });
-                this.utilProvider
-                    .getLocation(true)
-                    .then((coords: Coordinates) => {
-                        this.myLocation = coords;
-                        this.addOrUpdateOwnLocation(coords);
-                        this.addMarker();
-                        this.isReady = true;
-                    }).catch((error) => {
-                        this.isReady = true;
-                    });
+                if (this.defaultLocation) {
+                    this.locationRef = Object.assign({}, this.defaultLocation);
+                    this.addOrUpdateOwnLocation(this.locationRef);
+                    this.addMarker();
+                    this.isReady = true;
+                } else {
+                    this.utilProvider
+                        .getLocation(true)
+                        .then((coords: Coordinates) => {
+                            this.locationRef = Object.assign({}, coords);
+                            this.addOrUpdateOwnLocation(coords);
+                            this.addMarker();
+                            this.isReady = true;
+                        }).catch((error) => {
+                            this.isReady = true;
+                        });
+                }
             });
     }
 
@@ -178,7 +206,7 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                                             .save({
                                                 bank_name: this.bankDetail.bank.name,
                                                 branch: this.bankDetail,
-                                                location: this.myLocation
+                                                location: this.locationRef
                                             });
                                     });
                             });

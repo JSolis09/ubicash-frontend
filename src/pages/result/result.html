@@ -22,7 +22,13 @@
         </ion-item>
     </ion-list>
     <div class="section-map" *ngSwitchCase="true">
-        <map [results]="bankDetails" [observeLocation]="locationSubject"></map>
+        <map
+            *ngIf="showMap"
+            [defaultLocation]="locationRef"
+            [observeLocation]="locationSubject"
+            [results]="bankDetails"
+            (onChangeUserPosition)="onChangeUserPosition($event)">
+        </map>
     </div>
     <div class="section-list" *ngSwitchCase="false">
         <ion-list class="list">
