@@ -18,6 +18,7 @@
 @import '../theme/buttons';
 @import '../theme/forms';
 @import '../theme/modal';
+@import '../theme/spinner';
 
 ion-content {
     background-color: $bg-app;
@@ -35,6 +36,13 @@ ion-content {
     display: block;
     margin: auto;
     height: 8em;
+}
+
+.default-spinner {
+    .loading-wrapper {
+        box-shadow: none;
+        background: transparent;
+    }
 }
 
 ion-menu {

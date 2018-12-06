@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Coordinates } from '@ionic-native/geolocation';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 
 import { LoginPage } from '../login/login';
 import { Customer } from '../../providers/customer/customer';
@@ -23,8 +22,7 @@ export class HomePage {
     public bank: string;
     public banks: Observable<Bank[]>;
     public customer: Customer;
-    public locationSubject: Subject<Coordinates> = new Subject<Coordinates>();
-
+    
     constructor(private navCtrl: NavController,
                 private customerService: CustomerServiceProvider,
                 private logService: LogServiceProvider,
@@ -40,9 +38,6 @@ export class HomePage {
                 this.navCtrl.setRoot(LoginPage);
                 return [];
             });
-    }
-
-    ionViewDidLoad() {
         this.utilProvider
             .getLocation()
             .then((coords) => {

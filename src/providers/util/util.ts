@@ -98,4 +98,17 @@ export class UtilProvider {
         return oldCoords.latitude !== newCoords.latitude || oldCoords.longitude !== newCoords.longitude;
     };
 
+    public getSpinnerHtml(): string {
+        return `<div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>`;
+    }
+
 }
