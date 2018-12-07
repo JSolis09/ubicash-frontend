@@ -1,12 +1,14 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar class="result-nav">
         <button class="menu" ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Búsqueda</ion-title>
+        <ion-title class="title">Búsqueda</ion-title>
+        <ion-item class="switchView">
+            <ion-label> {{ !typeView ? 'Mapa': 'Lista' }}</ion-label>
+            <ion-toggle color="primary" checked="true" [(ngModel)]="typeView" [disabled]="!bank"></ion-toggle>
+        </ion-item>
     </ion-navbar>
-</ion-header>
-<ion-content>
     <ion-list class="search-section">
         <ion-item class="input-search">
             <ion-select class="select-search" [(ngModel)]="bank" placeholder="Seleccione un banco" (ionChange)="changeBank()" >
@@ -14,8 +16,27 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <map
-        [animation]="true"
-        (onChangeUserPosition)="onChangeUserPosition($event)">
-    </map>
+</ion-header>
+<ion-content>
+    <div class="section-map" [hidden]="!typeView">
+        <map
+            *ngIf="showMap"
+            [animation]="true"
+            [results]="results"
+            (onChangeUserPosition)="onChangeUserPosition($event)">
+        </map>
+    </div>
+    <div class="section-list" [hidden]="typeView">
+        <ion-list class="list">
+            <ion-item class="item" *ngFor="let bankDetail of bankDetailList">
+                <div class="description">
+                    <b>{{ bankDetail.bank?.name }}</b> {{ bankDetail.address }}, {{ bankDetail.detail }}
+                    <span class="distance">(Aprox. {{ bankDetail.distance | number:'1.1-2' }} km)</span>
+                </div>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="getMoreBankDetail($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
 </ion-content>

@@ -16,7 +16,6 @@ import { BankDetail } from '../../providers/bank/bank';
 import { UtilProvider } from '../../providers/util/util';
 import { LogServiceProvider } from '../../providers/log/log-service';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { LoadingController } from 'ionic-angular';
 
 @Component({
@@ -26,8 +25,6 @@ import { LoadingController } from 'ionic-angular';
 export class MapComponent implements OnInit, OnDestroy, OnChanges {
     
     @Input() animation: boolean;
-    @Input() defaultLocation: Coordinates;
-    @Input() observeLocation: Subject<Coordinates>;
     @Input() results: BankDetail[];
     @Output() onChangeUserPosition: EventEmitter<Coordinates> = new EventEmitter<Coordinates>();
     @ViewChild('map') mapElement: ElementRef;
@@ -35,7 +32,6 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
     private locationRef: Coordinates;
     private map: GoogleMap;
     private markers: Marker[];
-    private observeLocationSubscription: Subscription;
     private updateLocationSubscription: Subscription;
     private userMarker: Marker;
     private locationPromise: any = null;
@@ -65,25 +61,36 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
         }
         
         ngOnInit(): void {
-            this.init();
-            if (this.observeLocation) {
-                this.observeLocationSubscription = this.observeLocation
-                    .subscribe((coords: Coordinates) => {
-                        if (this.utilProvider.isDifferentLocation(this.locationRef, coords)) {
-                            this.locationRef = Object.assign({}, coords);
-                            this.addOrUpdateOwnLocation(coords);
-                        }
-                    });
-            }
+            const spinner = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: this.utilProvider.getSpinnerHtml(),
+                cssClass: 'default-spinner'
+            });
+            spinner.present();
+            this.getMapElement()
+                .then(() => {
+                    spinner.dismiss();
+                    this.init();
+                }, () => {
+                    spinner.dismiss();
+                });
         }
         
         ngOnDestroy(): void {
             if (this.updateLocationSubscription) {
                 this.updateLocationSubscription.unsubscribe();
             };
-            if (this.observeLocationSubscription) {
-                this.observeLocationSubscription.unsubscribe();
-            };
+        }
+
+        private getMapElement(): Promise<any> {
+            return new Promise((resolve, reject) => {
+                let interval = setInterval(() => {
+                    if (this.mapElement && this.mapElement.nativeElement) {
+                        clearInterval(interval);
+                        resolve(true);
+                    }
+                }, 10);
+            });
         }
 
         public addOrUpdateOwnLocation(coords: Coordinates): void {
@@ -131,20 +138,17 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                 },
                 mapType: <MapType>GoogleMapsMapTypeId.ROADMAP
             };
-            if (this.defaultLocation) {
-                mapOptions = Object.assign(mapOptions, {
-                    camera: {
-                        target: {
-                            lat: this.defaultLocation.latitude,
-                            lng: this.defaultLocation.longitude
-                        }
-                    }
-                });
-            }
+            const spinner = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: this.utilProvider.getSpinnerHtml(),
+                cssClass: 'default-spinner'
+            });
+            spinner.present();
             this.map = this.googleMaps.create(this.mapElement.nativeElement, mapOptions);
             this.map
                 .one(GoogleMapsEvent.MAP_READY)
                 .then(() => {
+                    spinner.dismiss();
                     this.updateLocationSubscription = this.map
                         .on(GoogleMapsEvent.MY_LOCATION_BUTTON_CLICK)
                         .subscribe((coords) => {
@@ -163,7 +167,9 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                                                 latitude: response.latLng.lat,
                                                 longitude: response.latLng.lng
                                             } as Coordinates;
-                                            this.addOrUpdateOwnLocation(currentCoords);         
+                                            this.locationRef = Object.assign({}, currentCoords);
+                                            this.onChangeUserPosition.emit(this.locationRef);
+                                            this.addOrUpdateOwnLocation(currentCoords);       
                                         }
                                         this.locationPromise = null;
                                         spinner.dismiss();
@@ -173,23 +179,16 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                                     });
                             }
                         });
-                    if (this.defaultLocation) {
-                        this.locationRef = Object.assign({}, this.defaultLocation);
-                        this.addOrUpdateOwnLocation(this.locationRef);
-                        this.addMarker();
-                        this.isReady = true;
-                    } else {
-                        this.utilProvider
-                            .getLocation(true)
-                            .then((coords: Coordinates) => {
-                                this.locationRef = Object.assign({}, coords);
-                                this.addOrUpdateOwnLocation(coords);
-                                this.addMarker();
-                                this.isReady = true;
-                            }).catch((error) => {
-                                this.isReady = true;
-                            });
-                    }
+                    this.utilProvider
+                        .getLocation(true)
+                        .then((coords: Coordinates) => {
+                            this.locationRef = Object.assign({}, coords);
+                            this.addOrUpdateOwnLocation(coords);
+                            this.addMarker();
+                            this.isReady = true;
+                        }).catch((error) => {
+                            this.isReady = true;
+                        });
                 });
         }
         

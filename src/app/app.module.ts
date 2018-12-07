@@ -10,7 +10,6 @@ import { HomePage } from '../pages/home/home';
 import { ForgotPasswordPageModule } from '../pages/forgot-password/forgot-password.module';
 import { LoginPageModule } from '../pages/login/login.module';
 import { RegisterUserPageModule } from '../pages/register-user/register-user.module';
-import { ResultPageModule } from  '../pages/result/result.module';
 import { AppiServiceModule } from '../providers/api-service/api-service.module';
 import { CustomerServiceProvider } from '../providers/customer/customer-service';
 import { IonicStorageModule } from '@ionic/storage';
@@ -33,8 +32,7 @@ import { LogServiceProvider } from '../providers/log/log-service';
         IonicStorageModule.forRoot(),
         ForgotPasswordPageModule,
         LoginPageModule,
-        RegisterUserPageModule,
-        ResultPageModule
+        RegisterUserPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
