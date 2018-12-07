@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Platform, Nav } from 'ionic-angular';
+import { AlertController, Platform, Nav, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -22,6 +22,7 @@ export class MyApp {
 
     constructor(private alertCtrl: AlertController,
                 private customerService: CustomerServiceProvider,
+                private loadingCtrl: LoadingController,
                 private platform: Platform,
                 private statusBar: StatusBar,
                 private storage: Storage,
@@ -77,9 +78,17 @@ export class MyApp {
         }
 
         private closeSession(): void {
+            const loading = this.loadingCtrl.create({
+                content: 'Cerrando sesión...'
+            });
+            loading.present();
             this.customerService
                 .logout()
-                .subscribe(() => {
+                .then(() => {
+                    loading.dismiss();
+                    this.nav.setRoot(LoginPage);
+                }, () => {
+                    loading.dismiss();
                     this.nav.setRoot(LoginPage);
                 });
         }

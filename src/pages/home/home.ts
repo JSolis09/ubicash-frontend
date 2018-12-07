@@ -53,7 +53,7 @@ export class HomePage {
                 this.showMap = false;
                 this.customerService
                     .logout()
-                    .subscribe(() => { });
+                    .then(() => { });
                 this.navCtrl.setRoot(LoginPage);
                 return [];
             });

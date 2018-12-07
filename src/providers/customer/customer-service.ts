@@ -63,13 +63,14 @@ export class CustomerServiceProvider {
             .post('Customers/login', customer)
     }
 
-    public logout(): Observable<any> {
+    public logout(): Promise<any> {
         const customerToken = this.customerToken || { } as CustomerToken;
         const headers = new Headers();
         headers.set('Authorization', customerToken.id);
         return this.apiService
             .post('Customers/logout',{ }, { headers })
-            .map(() => {
+            .toPromise()
+            .then(() => {
                 return this.clean();
             })
             .catch(() => {
