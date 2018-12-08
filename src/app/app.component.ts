@@ -79,7 +79,7 @@ export class MyApp {
         private closeSession(): void {
             this.customerService
                 .logout()
-                .then(() => {
+                .subscribe(() => {
                     this.nav.setRoot(LoginPage);
                 });
         }

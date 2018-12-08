@@ -38,13 +38,6 @@ export class HomePage {
                 this.navCtrl.setRoot(LoginPage);
                 return [];
             });
-        this.utilProvider
-            .getLocation()
-            .then((coords) => {
-                this.locationRef = Object.assign({}, coords);
-                this.utilProvider.setCurrentLocation(this.locationRef);
-            })
-            .catch((error) => { });
     }
 
     public onChangeUserPosition(locationRef: Coordinates): void {
@@ -54,14 +47,21 @@ export class HomePage {
 
     public changeBank(): void {
         const bank: Bank = this.bankService.getBankById(this.bankList, this.bank);
-        this.logService
-            .save({
-                bank_name: bank.name,
-                location: this.locationRef
-            });
+        this.utilProvider
+            .getLocation()
+            .then((coords) => {
+                this.logService
+                    .save({
+                        bank_name: bank.name,
+                        location: this.locationRef
+                    });
+            })
+            .catch((error) => { });
         this.navCtrl
             .push(ResultPage, {
-                bank: bank, locationRef: Object.assign({}, this.locationRef) });
+                bank: bank,
+                locationRef: Object.assign({}, this.locationRef)
+            });
     }
 
 }

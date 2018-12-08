@@ -35,7 +35,6 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
     private locationRef: Coordinates;
     private map: GoogleMap;
     private markers: Marker[];
-    private observeLocationSubscription: Subscription;
     private updateLocationSubscription: Subscription;
     private userMarker: Marker;
     private locationPromise: any = null;
@@ -65,25 +64,34 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
         }
         
         ngOnInit(): void {
-            this.init();
-            if (this.observeLocation) {
-                this.observeLocationSubscription = this.observeLocation
-                    .subscribe((coords: Coordinates) => {
-                        if (this.utilProvider.isDifferentLocation(this.locationRef, coords)) {
-                            this.locationRef = Object.assign({}, coords);
-                            this.addOrUpdateOwnLocation(coords);
-                        }
-                    });
-            }
+            this.getMapElement()
+                .then(() => {
+                   this.init();
+                });
         }
         
         ngOnDestroy(): void {
             if (this.updateLocationSubscription) {
                 this.updateLocationSubscription.unsubscribe();
             };
-            if (this.observeLocationSubscription) {
-                this.observeLocationSubscription.unsubscribe();
-            };
+        }
+
+        private getMapElement(): Promise<any> {
+            const spinner = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: this.utilProvider.getSpinnerHtml(),
+                cssClass: 'default-spinner'
+            });
+            spinner.present();
+            return new Promise((resolve, reject) => {
+                const interval = setInterval(() => {
+                    if (this.mapElement && this.mapElement.nativeElement) {
+                        spinner.dismiss();
+                        clearInterval(interval);
+                        resolve(true);
+                    }
+                }, 100);
+            });
         }
 
         public addOrUpdateOwnLocation(coords: Coordinates): void {
@@ -141,10 +149,17 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 });
             }
+            const spinner = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: this.utilProvider.getSpinnerHtml(),
+                cssClass: 'default-spinner'
+            });
+            spinner.present();
             this.map = this.googleMaps.create(this.mapElement.nativeElement, mapOptions);
             this.map
                 .one(GoogleMapsEvent.MAP_READY)
                 .then(() => {
+                    spinner.dismiss();
                     this.updateLocationSubscription = this.map
                         .on(GoogleMapsEvent.MY_LOCATION_BUTTON_CLICK)
                         .subscribe((coords) => {
@@ -163,6 +178,8 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                                                 latitude: response.latLng.lat,
                                                 longitude: response.latLng.lng
                                             } as Coordinates;
+                                            this.locationRef = Object.assign({}, currentCoords);
+                                            this.onChangeUserPosition.emit(this.locationRef);
                                             this.addOrUpdateOwnLocation(currentCoords);         
                                         }
                                         this.locationPromise = null;
@@ -183,6 +200,7 @@ export class MapComponent implements OnInit, OnDestroy, OnChanges {
                             .getLocation(true)
                             .then((coords: Coordinates) => {
                                 this.locationRef = Object.assign({}, coords);
+                                this.onChangeUserPosition.emit(this.locationRef);
                                 this.addOrUpdateOwnLocation(coords);
                                 this.addMarker();
                                 this.isReady = true;
