@@ -11,7 +11,7 @@
     </ion-navbar>
     <ion-list class="search-section">
         <ion-item class="input-search">
-            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Seleccione un banco" (ionChange)="changeBank()" >
+            <ion-select class="select-search" [(ngModel)]="bank" placeholder="Seleccione un banco" (ionChange)="changeBank()" [disabled]="!locationRef || disabledSearch">
                 <ion-option *ngFor="let bank of (banks | async)" [value]="bank.id">{{bank.short_name}}</ion-option>
             </ion-select>
         </ion-item>
@@ -19,12 +19,10 @@
 </ion-header>
 <ion-content>
     <div class="section-map" [hidden]="!typeView">
-        <map
-            *ngIf="showMap"
-            [animation]="true"
+        <map-bank
             [results]="results"
             (onChangeUserPosition)="onChangeUserPosition($event)">
-        </map>
+        </map-bank>
     </div>
     <div class="section-list" [hidden]="typeView">
         <ion-list class="list">

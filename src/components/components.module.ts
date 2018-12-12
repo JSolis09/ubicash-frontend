@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from 'ionic-angular';
-import { MapComponent } from './map/map';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { UtilProvider } from '../providers/util/util';
 import { MarkerDetailComponent } from './marker-detail/marker-detail';
 import { FbButtonComponent } from './fb-button/fb-button';
 import { LogServiceProvider } from '../providers/log/log-service';
+import { MapBankComponent } from './map-bank/map-bank';
 
 @NgModule({
 	declarations: [
-        MapComponent,
         MarkerDetailComponent,
-        FbButtonComponent
+        FbButtonComponent,
+        MapBankComponent
     ],
     imports: [
         BrowserModule,
@@ -25,9 +25,9 @@ import { LogServiceProvider } from '../providers/log/log-service';
         LogServiceProvider
     ],
 	exports: [
-        MapComponent,
         MarkerDetailComponent,
-        FbButtonComponent
+        FbButtonComponent,
+        MapBankComponent
     ]
 })
 export class ComponentsModule {}

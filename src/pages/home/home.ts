@@ -57,13 +57,6 @@ export class HomePage {
                 this.navCtrl.setRoot(LoginPage);
                 return [];
             });
-        this.utilProvider
-            .getLocation()
-            .then((coords) => {
-                this.locationRef = Object.assign({}, coords);
-                this.utilProvider.setCurrentLocation(this.locationRef);
-            })
-            .catch((error) => { });
     }
 
     private saveLog(bank: Bank): void {
@@ -105,6 +98,7 @@ export class HomePage {
         this.bankService
             .getBankDetails(bank.id, locationRef)
             .subscribe((bankDetails: BankDetail[]) => {
+                this.disabledSearch = false;
                 this.results = [...bankDetails];
                 this.bankDetails = bankDetails || [];
                 this.mapBankList(bank);
@@ -124,6 +118,7 @@ export class HomePage {
                     alert.present();
                 }
             }, () => {
+                this.disabledSearch = false;
                 loading.dismiss();
             });
     }
